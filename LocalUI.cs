@@ -62,7 +62,7 @@ namespace LunAdd
             {FieldType.FirstName, "Vorname" },
             {FieldType.LastName, "Zuname" },
             {FieldType.DisplayName, "Angezeigter Name" },
-            {FieldType.HomeStreet, "Wohnhaft" }, {FieldType.HomeCity, "" }, {FieldType.HomeZipCode, "in"},
+            {FieldType.HomeStreet, "Wohnhaft" }, {FieldType.HomeCity, "in" }, {FieldType.HomeZipCode, "Postleitzahl"},
             {FieldType.Company, "Firma" },
             {FieldType.PrimaryEmail, "Standard E-Mail" },
             {FieldType.WorkAddress, "Dienstliche Anschrift" },

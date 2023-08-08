@@ -14,6 +14,8 @@ namespace LunAdd
         StreamReader? sr;
         VCard? currentCard;
         string currentGUI = "", currentField = "";
+        public string CurrentGUI {get => currentGUI; private set { currentGUI = value;} }
+
         private readonly string datei1 = "Resources/Mappe1.csv";
 
         public List<VCard> cards;
@@ -79,7 +81,14 @@ namespace LunAdd
                             daten[2] = "0" + daten[2];
                     }
                     currentField = daten[1];
-                    currentCard?.Adressdaten.Add(daten[1], daten[2]);
+                    try
+                    {
+                        currentCard?.AddNewField(daten[1], daten[2]);
+                    }
+                    catch(Exception e)
+                    {
+                        MessageBox.Show(e.ToString());
+                    }
 
 
                     // Dry run first
