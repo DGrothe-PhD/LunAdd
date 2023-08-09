@@ -1,8 +1,4 @@
-using System.ComponentModel;
-using System.Text;
-using System.Speech;
 using System.Speech.Synthesis;
-using System;
 
 namespace LunAdd
 {
