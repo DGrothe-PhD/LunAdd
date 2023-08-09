@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace LunAdd
 {
@@ -31,6 +27,30 @@ namespace LunAdd
             return s;
         }
 
+        internal static string HelpReadingNotes(this string input)
+        {
+            string[] snippets = input.Split("\n");
+            var timemarkers = new[] {"Uhr", ":30", ":15", ":00", ":45", ".30", ".15", ".00", ".45" };
+            for (int i=0; i<snippets.Length; i++)
+            {
+                var s = snippets[i].Trim();
+                if (timemarkers.Any(s.Contains))
+                {
+                    //Need to check for key as a whole word. "Fr" -> "Freitag", whereas "Freundlich" stays.
+                    foreach (string key in LocalUI.Weekdays.Keys)
+                    {
+                        int w = s.IndexOf(key);
+                        if (w == -1) continue;
+                        if (w + 2 < s.Length && !Char.IsLetter(s[w + 2]))
+                            s = s.Replace("-", " bis ");
+                            s = s.Replace(key, LocalUI.Weekdays[key]);
+                    }
+                    snippets[i] = s;
+                }
+            }
+            return String.Join("\r\n", snippets);
+        }
+
         internal static string HelpReadingPhone(this string input)
         {
             // far from elegant but at least it does it
@@ -54,6 +74,12 @@ namespace LunAdd
     }
     internal static class LocalUI
     {
+        internal static Dictionary<String, String> Weekdays = new Dictionary<String, String>()
+        {
+            {"Mo", "Montag" }, {"Di", "Dienstag"}, {"Mi", "Mittwoch"}, {"Do", "Donnerstag"},
+            {"Fr", "Freitag" }, {"Sa", "Samstag"}, {"So", "Sonntag"}
+        };
+
         internal static Dictionary<FieldType, String> GermanFieldNames = new Dictionary<FieldType, String>()
         {
             {FieldType.WorkCountry, "Arbeitet in" },
@@ -67,7 +93,7 @@ namespace LunAdd
             {FieldType.PrimaryEmail, "Standard E-Mail" },
             {FieldType.WorkAddress, "Dienstliche Anschrift" },
             {FieldType.WorkZipCode, "in" },
-            {FieldType.WorkCity, "" },
+            {FieldType.WorkCity, "Geschäftlich in" },
             {FieldType.BusinessEMail, "Geschäftliche E-Mail" },
             {FieldType.WorkPhone, "Dienstliche Telefonnummer" },
             {FieldType.HomePhone, "Telefon privat" },

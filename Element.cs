@@ -61,6 +61,10 @@ namespace LunAdd
                 {
                     speaker.SpeakSsmlAsync((txtContent.Text.HelpReadingPhone()).wrapSpeech());
                 }
+                else if (FieldType.ToString().Contains("Notes"))
+                {
+                    speaker.SpeakSsmlAsync((txtContent.Text.HelpReadingNotes()).wrapSpeech());
+                }
                 else
                     speaker.SpeakAsync(txtContent.Text);
             }
