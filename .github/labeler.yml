@@ -1,0 +1,12 @@
+deployment:
+- any: ['.github/workflows/*.yml', '!labeler.yml']
+
+project:
+- '*.sln'
+- '*.proj'
+
+design:
+- 'src/Resources/*.png'
+
+testcase:
+- './**/*Test*.cs'
