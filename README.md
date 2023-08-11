@@ -4,7 +4,7 @@ Making Thunderbird address book usable with lost eyesight
 ## Scenario: Searching for an entry your address book
 Imagine you want to find out the telephone number and opening hours of a restaurant, a doctor's.
 
-But, problem is, you cannot read any line on your screen.
+But, only trouble is, you cannot read any line on your screen and also you cannot easily navigate with your mouse or on the touch screen.
 And you're alone at the moment.
 
 1. Activate Windows' reading function
