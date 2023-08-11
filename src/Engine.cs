@@ -43,6 +43,12 @@
                     //Notes can be multiliners so append them to the preceding dictionary value.
                     if (daten.Length < 3)
                     {
+                        if (!Char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
+                        {
+                            //prevent the engine from speaking "======" verbosely
+                            currentCard?.AppendLineToValue(currentField, "(Querlinie)");
+                            continue;
+                        }
                         currentCard?.AppendLineToValue(currentField, zeile);
                         continue;
                     }
