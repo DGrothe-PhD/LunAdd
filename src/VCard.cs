@@ -76,6 +76,6 @@ namespace LunAdd
 
         internal static readonly List<String> excludedFields = new()
         { "LastModifiedDate", "PhotoType", "PreferMailFormat", "AllowRemoteContent",
-            "PopularityIndex", "PreferDisplayName"};
+            "PopularityIndex", "PreferDisplayName", "UID"};
     }
 }

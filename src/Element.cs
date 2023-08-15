@@ -2,36 +2,6 @@
 
 namespace LunAdd
 {
-    public enum FieldType
-    {
-        FullName,
-        FirstName,
-        LastName,
-        DisplayName,
-        //
-        HomeStreet,
-        HomeCity,
-        HomeZipCode,
-        HomeCountry,
-        Company,
-        PrimaryEmail,
-        //
-        WorkAddress,
-        WorkZipCode,
-        WorkCity,
-        WorkCountry,
-        BusinessEMail,
-        //
-        WorkPhone,
-        HomePhone,
-        FaxNumber,
-        CellularNumber,
-        OtherPhone,
-        //
-        Notes,
-        WebPage1,
-        WebPage2
-    }
 
     public partial class Element : StandardForm
     {

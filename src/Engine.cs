@@ -7,7 +7,7 @@
         StreamReader? sr;
         VCard? currentCard;
         string currentGUI = "", currentField = "";
-        public string CurrentGUI {get => currentGUI; private set { currentGUI = value;} }
+        public string CurrentGUI { get => currentGUI; private set { currentGUI = value; } }
 
         private readonly string datei1 = "Resources/Mappe1.csv";
 
@@ -39,11 +39,19 @@
                     if (zeile.Length < 3) continue;
 
                     string[] daten = zeile.TrimEnd(';').Split(';');
-                    
+
                     //Notes can be multiliners so append them to the preceding dictionary value.
-                    if (daten.Length < 3)
+                    // VCard format is multiline too, but special. Therein, the colon is the major column separator!
+                    if (currentField.Contains("vCard"))
                     {
-                        if (!Char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
+                        //VCard mode is on
+                        ReadVCardDetails(zeile);
+                        continue;
+                    }
+                    
+                    if (currentField != "" && daten.Length < 3)
+                    {
+                        if (!char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
                         {
                             //prevent the engine from speaking "======" verbosely
                             currentCard?.AppendLineToValue(currentField, "(Querlinie)");
@@ -54,13 +62,14 @@
                     }
 
                     //gui present for next field.
-                    string gui = daten[0];
+                    string gui_candidate = daten[0];
 
-                    if (gui.Length < 2) continue;
+                    if (gui_candidate.Length < 2) continue;
+
                     // Next card arrived so put this to the list first.
-                    if (!gui.Equals(currentGUI))
+                    if (gui_candidate.Length == 36 && !gui_candidate.Equals(currentGUI))
                     {
-                        currentGUI = gui;
+                        currentGUI = gui_candidate;
                         if (currentCard != null)
                         {
                             currentCard.AppendFullName();
@@ -70,7 +79,7 @@
                     }
 
                     // home country telephone number lost its beginning "0"
-                    if ((daten[1].Contains("Phone") || daten[1].Contains("Number"))) 
+                    if (daten[1].Contains("Phone") || daten[1].Contains("Number"))
                     {
                         if (daten[2].StartsWith("+49 "))
                             daten[2] = "0" + daten[2][4..];
@@ -79,12 +88,12 @@
                         else if (daten[2][0] != '0')
                             daten[2] = "0" + daten[2];
                     }
-                    currentField = daten[1];
+                    currentField = daten[1];//my way of dealing with multiline fields.
                     try
                     {
                         currentCard?.AddNewField(daten[1], daten[2]);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         MessageBox.Show(e.ToString());
                     }
@@ -105,6 +114,27 @@
                 sr?.Close();
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.ToString());
+            }
+        }
+
+        private void ReadVCardDetails(string zeile)
+        {
+            if (zeile.StartsWith("END:VCARD"))
+            {
+                currentField = "ENDOFCARD";//VCard mode switched off
+                return;
+            }
+            string[] daten = zeile.Split(':', 2);
+            try
+            {
+                //TODO adapt to conventional field names, BUT take care of double fields that way
+                //Take care of the "\n"'s.
+                //There can be extra colons in the text for notes.
+                currentCard?.AddNewField(daten[1], daten[2]);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
             }
         }
     }
