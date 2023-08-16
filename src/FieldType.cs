@@ -28,10 +28,14 @@
         //
         Notes,
         WebPage1,
-        WebPage2
+        WebPage2,
+        AdressList,
+        PrimaryBusinessEMail,
+        SecondEmail,
+        NameList,
     }
 
-    public class VCardFields
+    public static class VCardFields
     {
         //N:Surname;Christian;some;extra;infomaybe
         //FN:Full Name String Displayed

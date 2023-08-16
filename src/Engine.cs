@@ -6,10 +6,12 @@
         //static CultureInfo accessLocal = new CultureInfo("de-DE");
         StreamReader? sr;
         VCard? currentCard;
-        string currentGUI = "", currentField = "";
+        string currentGUI = "", currentField = "", currentVCardField = "";
         public string CurrentGUI { get => currentGUI; private set { currentGUI = value; } }
 
         private readonly string datei1 = "Resources/Mappe1.csv";
+        //private readonly string datei1 = "Resources/privat_firmen.csv";
+        //private readonly string datei1 = "Resources/test.csv";
 
         public List<VCard> cards;
 
@@ -48,7 +50,7 @@
                         ReadVCardDetails(zeile);
                         continue;
                     }
-                    
+
                     if (currentField != "" && daten.Length < 3)
                     {
                         if (!char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
@@ -117,6 +119,7 @@
             }
         }
 
+        int trynumtimes = 0;
         private void ReadVCardDetails(string zeile)
         {
             if (zeile.StartsWith("END:VCARD"))
@@ -130,11 +133,25 @@
                 //TODO adapt to conventional field names, BUT take care of double fields that way
                 //Take care of the "\n"'s.
                 //There can be extra colons in the text for notes.
-                currentCard?.AddNewField(daten[1], daten[2]);
+                if (currentVCardField != "" && daten.Length == 1)
+                {
+                    if (!char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
+                    {
+                        //prevent the engine from speaking "======" verbosely
+                        currentCard?.AppendLineToValue(currentVCardField, "(Querlinie)");
+                        return;
+                    }
+                    currentCard?.AppendLineToValue(currentVCardField, zeile);
+                    return;
+                }
+                currentVCardField = daten[0];
+                currentCard?.AddNewField(daten[0], daten[1]);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString());
+                if (trynumtimes < 3)
+                    MessageBox.Show(e.ToString() + " in \n" + zeile);
+                trynumtimes++;
             }
         }
     }

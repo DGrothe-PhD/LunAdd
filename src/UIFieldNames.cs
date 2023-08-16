@@ -37,13 +37,13 @@ namespace LunAdd
                 if (timemarkers.Any(s.Contains))
                 {
                     //Need to check for key as a whole word. "Fr" -> "Freitag", whereas "Freundlich" stays.
-                    foreach (string key in LocalUI.Weekdays.Keys)
+                    foreach (string key in UIFieldNames.Weekdays.Keys)
                     {
                         int w = s.IndexOf(key);
                         if (w == -1) continue;
                         if (w + 2 < s.Length && !Char.IsLetter(s[w + 2]))
                             s = s.Replace("-", " bis ");
-                            s = s.Replace(key, LocalUI.Weekdays[key]);
+                            s = s.Replace(key, UIFieldNames.Weekdays[key]);
                     }
                     snippets[i] = s;
                 }
@@ -72,7 +72,7 @@ namespace LunAdd
             return modifiedInput;
         }
     }
-    internal static class LocalUI
+    internal static class UIFieldNames
     {
         internal static Dictionary<String, String> Weekdays = new Dictionary<String, String>()
         {
@@ -87,10 +87,14 @@ namespace LunAdd
             {FieldType.FullName, "Vollständiger Name" },
             {FieldType.FirstName, "Vorname" },
             {FieldType.LastName, "Zuname" },
+            {FieldType.NameList, "Name" },
             {FieldType.DisplayName, "Angezeigter Name" },
             {FieldType.HomeStreet, "Wohnhaft" }, {FieldType.HomeCity, "in" }, {FieldType.HomeZipCode, "Postleitzahl"},
+            {FieldType.AdressList, "Anschrift" },
             {FieldType.Company, "Firma" },
             {FieldType.PrimaryEmail, "Standard E-Mail" },
+            {FieldType.SecondEmail, "Zweite E-Mail" },
+            {FieldType.PrimaryBusinessEMail, "Geschäftliche Haupt-E-Mail" },
             {FieldType.WorkAddress, "Dienstliche Anschrift" },
             {FieldType.WorkZipCode, "in" },
             {FieldType.WorkCity, "Geschäftlich in" },
@@ -103,6 +107,20 @@ namespace LunAdd
             {FieldType.Notes, "Bemerkungen" },
             {FieldType.WebPage1, "Webseite 1" },
             {FieldType.WebPage2, "Webseite 2" }
+        };
+
+        internal static Dictionary<String, FieldType> VCardFieldNames = new()
+        {
+            { "N", FieldType.NameList },
+            { "ADR", FieldType.AdressList },
+            { "FN", FieldType.FullName},
+            { "EMAIL;PREF=1", FieldType.PrimaryEmail },
+            { "EMAIL;TYPE=work", FieldType.BusinessEMail },
+            { "EMAIL;PREF=1;TYPE=work", FieldType.PrimaryBusinessEMail },
+            { "TEL;TYPE=work;VALUE=TEXT", FieldType.WorkPhone},
+            { "TEL;TYPE=fax;VALUE=TEXT", FieldType.FaxNumber },
+            { "TEL;TYPE=cell;VALUE=TEXT", FieldType.CellularNumber},
+            { "NOTE", FieldType.Notes },
         };
     }
 }
