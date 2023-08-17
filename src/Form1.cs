@@ -5,10 +5,11 @@ namespace LunAdd
 {
     public partial class Form1 : StandardForm
     {
-        SpeechSynthesizer speaker = new SpeechSynthesizer();
-        int currentIndex = 0;
+        private readonly SpeechSynthesizer speaker = new SpeechSynthesizer();
+        private int currentIndex = 1;
+        private bool ignoreVCEvent = false;
         public VCard? VCard { get; private set; }
-        Engine? data;
+        private Engine? data;
         public Form1()
         {
             InitializeComponent();
@@ -17,7 +18,8 @@ namespace LunAdd
             btnForward.BackgroundImage = Image.FromFile("Resources/ArrowForward.png");
             btnForward.BackgroundImageLayout = ImageLayout.Stretch;
             run();
-            numIndex.Maximum = data?.cards?.Count ?? 0;
+            numIndex.Maximum = data?.cards?.Count ?? 1;
+            numIndex.Minimum = 1;
         }
 
         private void run()
@@ -28,47 +30,53 @@ namespace LunAdd
 
         private void updateFields()
         {
-            VCard = data?.cards[currentIndex];
+            ignoreVCEvent = true;
+            VCard = data?.cards[currentIndex - 1];
             string entry = VCard?.ToString() ?? "";
             StringBuilder sb = new StringBuilder();
             entry.Split("\r\n").ToList().ForEach(x => sb.Append(x.Trim()));
             entry = sb.ToString().Replace("\\n", Environment.NewLine);
             txtEntryInformation.Text = entry;
-            txtSuchstring.Text = (currentIndex + 1) + " von " + data?.cards.Count.ToString() ?? "";
+            txtSuchstring.Text = currentIndex + " von " + data?.cards.Count.ToString() ?? "";
+            numIndex.Value = currentIndex;
+
+            btnForward.Visible = (currentIndex < data?.cards.Count);
+            btnBack.Visible = (currentIndex > 1);
+            ignoreVCEvent = false;
         }
 
 
         private void btnForward_Click(object sender, EventArgs e)
         {
-            if (currentIndex < data?.cards.Count - 1)
+            if (currentIndex < data?.cards.Count)
             {
                 currentIndex++;
                 updateFields();
-                if (!btnBack.Visible) btnBack.Visible = true;
+                //if (!btnBack.Visible) btnBack.Visible = true;
             }
-            if (currentIndex == data?.cards.Count - 1)
-            {
-                btnForward.Visible = false;
-            }
+            //if (currentIndex == data?.cards.Count)
+            //{
+            //    btnForward.Visible = false;
+            //}
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            if (currentIndex > 0)
+            if (currentIndex > 1)
             {
                 currentIndex--;
                 updateFields();
-                if (!btnForward.Visible) btnForward.Visible = true;
+                //if (!btnForward.Visible) btnForward.Visible = true;
             }
-            if (currentIndex == 0)
-            {
-                btnBack.Visible = false;
-            }
+            //if (currentIndex == 1)
+            //{
+            //    btnBack.Visible = false;
+            //}
         }
-
         private void numIndex_ValueChanged(object sender, EventArgs e)
         {
-            currentIndex = (int)numIndex.Value - 1;
+            if (ignoreVCEvent) return;
+            currentIndex = (int)numIndex.Value;
             updateFields();
         }
 
