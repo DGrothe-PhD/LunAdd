@@ -56,10 +56,10 @@
                         if (!char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
                         {
                             //prevent the engine from speaking "======" verbosely
-                            currentCard?.AppendLineToValue(currentField, "(Querlinie)");
+                            currentCard?.AppendLineToValue(currentField, "(Querlinie)", true);
                             continue;
                         }
-                        currentCard?.AppendLineToValue(currentField, zeile);
+                        currentCard?.AppendLineToValue(currentField, zeile, true);
                         continue;
                     }
 
@@ -91,6 +91,11 @@
                             daten[2] = "0" + daten[2];
                     }
                     currentField = daten[1];//my way of dealing with multiline fields.
+
+                    //ignore vcard markers.
+                    daten[2] = daten[2].Replace("BEGIN:VCARD", "");
+                    if (String.IsNullOrEmpty(daten[2].Trim('"')))
+                        continue;
                     try
                     {
                         currentCard?.AddNewField(daten[1], daten[2]);
@@ -120,37 +125,47 @@
         }
 
         int trynumtimes = 0;
-        private void ReadVCardDetails(string zeile)
+
+        private void ReadVCardDetails(string textline)
         {
-            if (zeile.StartsWith("END:VCARD"))
+            if (textline.StartsWith("END:VCARD"))
             {
                 currentField = "ENDOFCARD";//VCard mode switched off
                 return;
             }
-            string[] daten = zeile.Split(':', 2);
+            string[] daten = textline.Split(':', 2);
+            if (daten[0].Contains("VERSION"))
+                return;
+
             try
             {
-                //TODO adapt to conventional field names, BUT take care of double fields that way
-                //Take care of the "\n"'s.
                 //There can be extra colons in the text for notes.
                 if (currentVCardField != "" && daten.Length == 1)
                 {
-                    if (!char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
+                    if (!char.IsLetterOrDigit(textline[0]) && textline.Count(f => f == textline[0]) == textline.Length)
                     {
                         //prevent the engine from speaking "======" verbosely
                         currentCard?.AppendLineToValue(currentVCardField, "(Querlinie)");
                         return;
                     }
-                    currentCard?.AppendLineToValue(currentVCardField, zeile);
+                    currentCard?.AppendLineToValue(currentVCardField, textline);
                     return;
                 }
-                currentVCardField = daten[0];
-                currentCard?.AddNewField(daten[0], daten[1]);
+                // Take legacy address field's name if possible, else take fieldname as in the database.
+                if (UIFieldNames.VCardFieldNames.TryGetValue(daten[0], out FieldType lookupfield))
+                {
+                    currentVCardField = lookupfield.ToString();
+                }
+                else
+                {
+                    currentVCardField = daten[0];
+                }
+                currentCard?.AddNewField(currentVCardField, daten[1]);
             }
             catch (Exception e)
             {
                 if (trynumtimes < 3)
-                    MessageBox.Show(e.ToString() + " in \n" + zeile);
+                    MessageBox.Show(e.ToString() + " in \n" + textline);
                 trynumtimes++;
             }
         }

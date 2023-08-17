@@ -91,9 +91,11 @@ namespace LunAdd
             {FieldType.DisplayName, "Angezeigter Name" },
             {FieldType.HomeStreet, "Wohnhaft" }, {FieldType.HomeCity, "in" }, {FieldType.HomeZipCode, "Postleitzahl"},
             {FieldType.AdressList, "Anschrift" },
-            {FieldType.Company, "Firma" },
             {FieldType.PrimaryEmail, "Standard E-Mail" },
             {FieldType.SecondEmail, "Zweite E-Mail" },
+            {FieldType.OtherEmail, "Andere E-Mail" },
+            {FieldType.Company, "Firma" },
+            {FieldType.Title, "Titel" },  {FieldType.Position, "Position" },
             {FieldType.PrimaryBusinessEMail, "Geschäftliche Haupt-E-Mail" },
             {FieldType.WorkAddress, "Dienstliche Anschrift" },
             {FieldType.WorkZipCode, "in" },
@@ -117,10 +119,15 @@ namespace LunAdd
             { "EMAIL;PREF=1", FieldType.PrimaryEmail },
             { "EMAIL;TYPE=work", FieldType.BusinessEMail },
             { "EMAIL;PREF=1;TYPE=work", FieldType.PrimaryBusinessEMail },
+            { "EMAIL", FieldType.OtherEmail},
+            { "EMAIL;TYPE=other", FieldType.OtherEmail},
+            { "TEL;VALUE=TEXT", FieldType.HomePhone},
             { "TEL;TYPE=work;VALUE=TEXT", FieldType.WorkPhone},
             { "TEL;TYPE=fax;VALUE=TEXT", FieldType.FaxNumber },
             { "TEL;TYPE=cell;VALUE=TEXT", FieldType.CellularNumber},
             { "NOTE", FieldType.Notes },
+            { "TITLE", FieldType.Title },
+            { "POSITION", FieldType.Position },
         };
     }
 }

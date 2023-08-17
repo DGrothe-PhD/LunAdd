@@ -15,21 +15,23 @@ namespace LunAdd
         }
 
 
-        public void AppendLineToValue(string currentKey, string appendtext)
+        public void AppendLineToValue(string currentKey, string appendtext, bool protectLineBreaks = false)
         {
-            Adressdaten[currentKey] += Environment.NewLine + appendtext.Trim();
+            Adressdaten[currentKey] += (protectLineBreaks?"\\n":"") 
+                + Environment.NewLine + appendtext.Trim();
         }
 
+        int numOfDoubleEntries = 0;
         public void AddNewField(string field, string value)
         {
             if (Adressdaten.ContainsKey(field))
             {
-                AddNewField("#" + field + "1", value);
-                var message = this.ToString();
-                message = (message.Length > 150) ? message[0..150] : message;
-                MessageBox.Show($"Corrupt source file. Double entry {field} found for card:\r\n"
-                    + message + "..."
-                );
+                AddNewField(field + " (2)", value);
+                //var message = this.ToString();
+                //message = (message.Length > 150) ? message[0..150] : message;
+                //MessageBox.Show($"Corrupt source file. Double entry {field} found for card:\r\n"
+                //    + message + "..."
+                //);
             }
             else
             {
