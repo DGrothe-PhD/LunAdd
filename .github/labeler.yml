@@ -8,5 +8,16 @@ project:
 design:
 - 'src/Resources/*.png'
 
+backend:
+- './**/*VCard*.cs'
+- './**/*Engine*.cs'
+- './**/*Field*.cs'
+
+frontend:
+- './**/*Form*.cs'
+- './**/*Form*.resx'
+- './**/*Element*.cs'
+- './**/*Element*.resx'
+
 testcase:
 - './**/*Test*.cs'
