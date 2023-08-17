@@ -147,9 +147,10 @@
             // 
             // numIndex
             // 
+            numIndex.Font = new Font("Segoe UI", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
             numIndex.Location = new Point(20, 127);
             numIndex.Name = "numIndex";
-            numIndex.Size = new Size(150, 27);
+            numIndex.Size = new Size(194, 70);
             numIndex.TabIndex = 10;
             numIndex.ValueChanged += numIndex_ValueChanged;
             // 
