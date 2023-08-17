@@ -48,31 +48,32 @@ namespace LunAdd
 
         private void btnForward_Click(object sender, EventArgs e)
         {
+            FlipForward();
+        }
+
+        private void FlipForward()
+        {
             if (currentIndex < data?.cards.Count)
             {
                 currentIndex++;
                 updateFields();
-                //if (!btnBack.Visible) btnBack.Visible = true;
             }
-            //if (currentIndex == data?.cards.Count)
-            //{
-            //    btnForward.Visible = false;
-            //}
         }
 
         private void btnBack_Click(object sender, EventArgs e)
+        {
+            FlipBack();
+        }
+
+        private void FlipBack()
         {
             if (currentIndex > 1)
             {
                 currentIndex--;
                 updateFields();
-                //if (!btnForward.Visible) btnForward.Visible = true;
             }
-            //if (currentIndex == 1)
-            //{
-            //    btnBack.Visible = false;
-            //}
         }
+
         private void numIndex_ValueChanged(object sender, EventArgs e)
         {
             if (ignoreVCEvent) return;
@@ -96,13 +97,19 @@ namespace LunAdd
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if(e.KeyChar == '+')
+            {
+                e.Handled = true;
+                FlipForward();
+            }
+            else if (e.KeyChar == '-')
+            {
+                e.Handled = true;
+                FlipBack();
+            }
+            //
             if (e.KeyChar == ' ')
             {
-                /*
-                 * speaker.Rate = Convert.ToInt32(speedUpDown.Value);
-                 * speaker.Volume = Convert.ToInt32(volumeUpDown.Value);
-                 * */
-                //speaker.SpeakAsync(txtEntryInformation.Text);
                 speaker.SpeakSsmlAsync(txtEntryInformation.Text.wrapSpeech());
             }
             if (e.KeyChar == 'n')
