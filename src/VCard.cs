@@ -1,11 +1,12 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LunAdd
 {
     public class VCard
     {
         private Dictionary<string, string> Adressdaten;
-        Dictionary<FieldType, String> LocalFieldNames = LocalUI.GermanFieldNames;
+        Dictionary<FieldType, String> LocalFieldNames = UIFieldNames.GermanFieldNames;
         // TODO multilanguage, centralized
 
         public VCard()
@@ -13,21 +14,24 @@ namespace LunAdd
             Adressdaten = new();
         }
 
-        public void AppendLineToValue(string currentKey, string appendtext)
+
+        public void AppendLineToValue(string currentKey, string appendtext, bool protectLineBreaks = false)
         {
-            Adressdaten[currentKey] += Environment.NewLine + appendtext;
+            Adressdaten[currentKey] += (protectLineBreaks?"\\n":"") 
+                + Environment.NewLine + appendtext.Trim();
         }
 
+        int numOfDoubleEntries = 0;
         public void AddNewField(string field, string value)
         {
-            if(Adressdaten.ContainsKey(field))
+            if (Adressdaten.ContainsKey(field))
             {
-                AddNewField("#"+field + "1", value);
-                var message = this.ToString();
-                message = (message.Length > 150) ? message[0..150] : message;
-                MessageBox.Show($"Corrupt CSV file. Double entry {field} found for card:\r\n" 
-                    + message + "..."
-                );
+                AddNewField(field + " (2)", value);
+                //var message = this.ToString();
+                //message = (message.Length > 150) ? message[0..150] : message;
+                //MessageBox.Show($"Corrupt source file. Double entry {field} found for card:\r\n"
+                //    + message + "..."
+                //);
             }
             else
             {
@@ -54,16 +58,26 @@ namespace LunAdd
             Adressdaten["FullName"] = s;
         }
 
+        string mlb = "\\n\r\n";
         public override string ToString()
         {
             StringBuilder sb = new();
-            if(Adressdaten.ContainsKey("FullName"))
-                sb.Append(Adressdaten["FullName"] + "\r\n");
+            if (Adressdaten.ContainsKey("FullName"))
+                sb.Append(Adressdaten["FullName"] + mlb);
             foreach (var d in Adressdaten)
             {
                 if (excludedFields.Contains(d.Key)) continue;
                 if (d.Key == "FullName") continue;
-                sb.Append($"{LocalFieldNames.GetTextOrDefault(d.Key)}: {d.Value.HelpReading()}\r\n");
+
+                if (UIFieldNames.VCardFieldNames.TryGetValue(d.Key, out FieldType lookupfield))
+                {
+                    if (LocalFieldNames.TryGetValue(lookupfield, out string? fieldname))
+                    {
+                        sb.Append($"{fieldname}: {d.Value.HelpReading()}"+ mlb);
+                        continue;
+                    }
+                }
+                sb.AppendLine($"{LocalFieldNames.GetTextOrDefault(d.Key)}: {d.Value.HelpReading()}"+ mlb);
             }
             return sb.ToString();
         }
@@ -76,6 +90,6 @@ namespace LunAdd
 
         internal static readonly List<String> excludedFields = new()
         { "LastModifiedDate", "PhotoType", "PreferMailFormat", "AllowRemoteContent",
-            "PopularityIndex", "PreferDisplayName"};
+            "PopularityIndex", "PreferDisplayName", "UID"};
     }
 }

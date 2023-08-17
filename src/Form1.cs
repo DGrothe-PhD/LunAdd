@@ -1,4 +1,5 @@
 using System.Speech.Synthesis;
+using System.Text;
 
 namespace LunAdd
 {
@@ -28,7 +29,11 @@ namespace LunAdd
         private void updateFields()
         {
             VCard = data?.cards[currentIndex];
-            txtEntryInformation.Text = VCard?.ToString() ?? "";
+            string entry = VCard?.ToString() ?? "";
+            StringBuilder sb = new StringBuilder();
+            entry.Split("\r\n").ToList().ForEach(x => sb.Append(x.Trim()));
+            entry = sb.ToString().Replace("\\n", Environment.NewLine);
+            txtEntryInformation.Text = entry;
             txtSuchstring.Text = (currentIndex + 1) + " von " + data?.cards.Count.ToString() ?? "";
         }
 

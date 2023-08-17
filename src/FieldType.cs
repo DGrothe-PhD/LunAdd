@@ -1,0 +1,40 @@
+﻿namespace LunAdd
+{
+    public enum FieldType
+    {
+        FullName,
+        FirstName,
+        LastName,
+        DisplayName,
+        //
+        HomeStreet,
+        HomeCity,
+        HomeZipCode,
+        HomeCountry,
+        PrimaryEmail,
+        //
+        Company,
+        Title,
+        Position,
+        WorkAddress,
+        WorkZipCode,
+        WorkCity,
+        WorkCountry,
+        BusinessEMail,
+        //
+        WorkPhone,
+        HomePhone,
+        FaxNumber,
+        CellularNumber,
+        OtherPhone,
+        //
+        Notes,
+        WebPage1,
+        WebPage2,
+        AdressList,
+        PrimaryBusinessEMail,
+        SecondEmail,
+        NameList,
+        OtherEmail,
+    }
+}
