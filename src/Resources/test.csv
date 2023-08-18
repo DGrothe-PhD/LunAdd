@@ -11,8 +11,22 @@ NOTE:Sprechzeiten\nMo - Do   	09.00 - 16.00 Uhr\nFr 	09.00 - 14.00 Uhr\n\nD
 TEL;TYPE=work;VALUE=TEXT:030 22
 UID:a0419099-5dc3-48ef-bfab-652527cb8632
 END:VCARD
-"
+7;thisdoesnotmatteratall	we won't see it"
 a0419099-5dc3-48ef-bfab-652527cb8632;PreferDisplayName;1
 a0419099-5dc3-48ef-bfab-652527cb8632;DisplayName;Stadtplatz Teststring
-a0419099-5dc3-48ef-bfab-652527cb8632;FirstName;Tegel
+a0419099-5dc3-48ef-bfab-652527cb8632;FirstName;Abc
 a0419099-5dc3-48ef-bfab-652527cb8632;LastName;Teststring
+42419099-5dc3-48ef-bfab-652527cb8632;PopularityIndex;0
+42419099-5dc3-48ef-bfab-652527cb8632;LastModifiedDate;1692014159
+42419099-5dc3-48ef-bfab-652527cb8632;_vCard;"BEGIN:VCARD
+VERSION:4.0
+N:Testzeichenkette;Some City;;;
+FN:Kneipe
+NOTE:Montag Ruhetag
+TEL;TYPE=work;VALUE=TEXT:030 1122
+UID:42419099-5dc3-48ef-bfab-652527cb8632
+END:VCARD
+42419099-5dc3-48ef-bfab-652527cb8632;PreferDisplayName;1
+42419099-5dc3-48ef-bfab-652527cb8632;DisplayName;Eckkneipe Zum Wirt
+42419099-5dc3-48ef-bfab-652527cb8632;FirstName;Def
+42419099-5dc3-48ef-bfab-652527cb8632;LastName;Teststring

@@ -12,14 +12,27 @@ namespace LunAdd
         private Engine? data;
         public Form1()
         {
-            InitializeComponent();
-            btnBack.BackgroundImage = Image.FromFile("Resources/ArrowBack.png");
-            btnBack.BackgroundImageLayout = ImageLayout.Stretch;
-            btnForward.BackgroundImage = Image.FromFile("Resources/ArrowForward.png");
-            btnForward.BackgroundImageLayout = ImageLayout.Stretch;
-            run();
-            numIndex.Maximum = data?.cards?.Count ?? 1;
-            numIndex.Minimum = 1;
+            try
+            {
+                InitializeComponent();
+                btnBack.BackgroundImage = Image.FromFile("Resources/ArrowBack.png");
+                btnBack.BackgroundImageLayout = ImageLayout.Stretch;
+                btnForward.BackgroundImage = Image.FromFile("Resources/ArrowForward.png");
+                btnForward.BackgroundImageLayout = ImageLayout.Stretch;
+                run();
+                numIndex.Maximum = data?.cards?.Count ?? 1;
+                numIndex.Minimum = 1;
+            }
+            catch(FileFormatException ex)
+            {
+                MessageBox.Show("Dateiformatfehler. Details:" + Environment.NewLine + ex.Message ?? "");
+                Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace?.ToString() ?? "");
+                Close();
+            }
         }
 
         private void run()
@@ -31,7 +44,15 @@ namespace LunAdd
         private void updateFields()
         {
             ignoreVCEvent = true;
-            VCard = data?.cards[currentIndex - 1];
+            try
+            {
+                VCard = data?.cards[currentIndex - 1];
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Problem beim Lesen der Datenquelle.");
+                Close();
+            }
             string entry = VCard?.ToString() ?? "";
             StringBuilder sb = new StringBuilder();
             entry.Split("\r\n").ToList().ForEach(x => sb.Append(x.Trim()));
@@ -159,19 +180,5 @@ namespace LunAdd
             ElementInvoke(FieldType.Notes);
         }
 
-        /*
-         * TODO
-         * 1-2 Comboboxen für Auswahl von Adressfeldern
-         * Piktogrammbuttons für:
-         *  - Zeige Adresse (vergrößert in neuem Textfenster)
-         *  - Zeige Mailadresse (vergrößert in neuem Textfenster)
-         *  - Zeige Notizen (vergrößert in neuem Textfenster)
-         *  - Zeige Telefonnummer (optional: Einsprechen der Ziffern)
-         *  
-         *  Nutzerführung mit Shortcut-Tasten!!!
-         *  - Ins Suchfeld springen
-         *  - Suche abschicken (Eingabe)
-         *  - Zeige Telefonnummer und so (von da oben das alles)
-         */
     }
 }

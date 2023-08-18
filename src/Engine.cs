@@ -66,7 +66,7 @@
                     //gui present for next field.
                     string gui_candidate = daten[0];
 
-                    if (gui_candidate.Length < 2) continue;
+                    if (gui_candidate.Length < 2) continue;//ignore worthless lines
 
                     // Next card arrived so put this to the list first.
                     if (gui_candidate.Length == 36 && !gui_candidate.Equals(currentGUI))
@@ -96,18 +96,9 @@
                     daten[2] = daten[2].Replace("BEGIN:VCARD", "");
                     if (String.IsNullOrEmpty(daten[2].Trim('"')))
                         continue;
-                    try
-                    {
-                        currentCard?.AddNewField(daten[1], daten[2]);
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.ToString());
-                    }
 
+                    currentCard?.AddNewField(daten[1], daten[2]);
 
-                    // Dry run first
-                    //if (anzahl > 15) break;
                 }
                 // Put last one 
                 if (currentCard != null)
@@ -119,8 +110,8 @@
             catch (Exception ex)
             {
                 sr?.Close();
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.ToString());
+                //MessageBox.Show(ex.Message + Environment.NewLine +"Details:" + Environment.NewLine + ex.StackTrace);
+                throw new FileFormatException(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
 
@@ -130,7 +121,7 @@
         {
             if (textline.StartsWith("END:VCARD"))
             {
-                currentField = "ENDOFCARD";//VCard mode switched off
+                currentField = "";//VCard mode switched off
                 return;
             }
             string[] daten = textline.Split(':', 2);

@@ -7,6 +7,16 @@ project:
 
 design:
 - 'src/Resources/*.png'
+- 'src/Resources/*.jpg'
+- 'src/Resources/*.mp*'
+- 'src/Resources/*.m4*'
+- 'src/Resources/*.wav'
+
+documentation:
+- '*.md'
+- '*.pdf'
+- '*.html'
+
 
 backend:
 - './**/*VCard*.cs'
