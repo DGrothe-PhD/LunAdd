@@ -21,12 +21,12 @@ namespace LunAdd
                 numIndex.Maximum = data?.cards?.Count ?? 1;
                 numIndex.Minimum = 1;
             }
-            catch(FileFormatException ex)
+            catch (FileFormatException ex)
             {
-                MessageBox.Show("Dateiformatfehler. Details:" + Environment.NewLine + ex.Message ?? "");
+                MessageBox.Show("Dateifehler. Details:" + Environment.NewLine + ex.Message ?? "");
                 Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace?.ToString() ?? "");
                 Close();
@@ -46,7 +46,7 @@ namespace LunAdd
             {
                 VCard = data?.cards[currentIndex - 1];
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Problem beim Lesen der Datenquelle.");
                 Close();
@@ -116,7 +116,7 @@ namespace LunAdd
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == '+')
+            if (e.KeyChar == '+')
             {
                 e.Handled = true;
                 FlipForward();
@@ -178,5 +178,16 @@ namespace LunAdd
             ElementInvoke(FieldType.Notes);
         }
 
+        public virtual void Element_KeyDown(object sender, KeyEventArgs e)
+        {
+            //e.Handled = true;
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                if (SayThis != null)
+                    speaker.SpeakAsyncCancel(SayThis);
+                this.Close();
+            }
+        }
     }
 }

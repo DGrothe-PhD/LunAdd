@@ -185,6 +185,7 @@
             Controls.Add(lblEintrag);
             Name = "Form1";
             Text = "Adressbuch";
+            KeyDown += Element_KeyDown;
             KeyPress += Form1_KeyPress;
             ((System.ComponentModel.ISupportInitialize)numIndex).EndInit();
             ResumeLayout(false);

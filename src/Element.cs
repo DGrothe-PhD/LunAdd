@@ -1,37 +1,44 @@
-﻿namespace LunAdd
+﻿using System.Speech.Synthesis;
+
+namespace LunAdd
 {
 
     public partial class Element : StandardForm
     {
         readonly FieldType FieldType;
+
         public Element(Form1 caller, FieldType fieldType)
         {
             InitializeComponent();
             FieldType = fieldType;
             lblTitle.Text = LocalFieldNames.GetText(fieldType);
             txtContent.Text = caller?.VCard?.GetEntry(fieldType.ToString())?.HelpReading() ?? "Leer";
+            //SayThis = new Prompt(PreparePrompt(), SynthesisTextFormat.Ssml);
             this.Focus();
+        }
+
+        private string PreparePrompt()
+        {
+            if (FieldType.ToString().Contains("Phone") || FieldType.ToString().Contains("Number"))
+            {
+                return txtContent.Text.HelpReadingPhone().wrapSpeech();
+            }
+
+            if (FieldType.ToString().Contains("Notes"))
+            {
+                return txtContent.Text.HelpReadingNotes().wrapSpeech();
+            }
+
+            return txtContent.Text.wrapSpeech();
         }
 
         private void Element_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == ' ')
             {
-                /*
-                 * speaker.Rate = Convert.ToInt32(speedUpDown.Value);
-                 * speaker.Volume = Convert.ToInt32(volumeUpDown.Value);
-                 * */
                 speaker.SpeakAsync(lblTitle.Text);
-                if (FieldType.ToString().Contains("Phone") || FieldType.ToString().Contains("Number"))
-                {
-                    speaker.SpeakSsmlAsync((txtContent.Text.HelpReadingPhone()).wrapSpeech());
-                }
-                else if (FieldType.ToString().Contains("Notes"))
-                {
-                    speaker.SpeakSsmlAsync((txtContent.Text.HelpReadingNotes()).wrapSpeech());
-                }
-                else
-                    speaker.SpeakAsync(txtContent.Text);
+                SayThis = new Prompt(PreparePrompt(), SynthesisTextFormat.Ssml);
+                speaker.SpeakAsync(SayThis);
             }
         }
 
@@ -41,6 +48,8 @@
             if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
+                if (SayThis != null)
+                    speaker.SpeakAsyncCancel(SayThis);
                 this.Close();
             }
         }
