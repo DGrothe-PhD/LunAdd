@@ -1,18 +1,13 @@
-﻿using System.Speech.Synthesis;
-
-namespace LunAdd
+﻿namespace LunAdd
 {
 
     public partial class Element : StandardForm
     {
-        SpeechSynthesizer speaker = new SpeechSynthesizer();
-        Dictionary<FieldType, String> LocalFieldNames = UIFieldNames.GermanFieldNames;
-        FieldType FieldType;
-
+        readonly FieldType FieldType;
         public Element(Form1 caller, FieldType fieldType)
         {
             InitializeComponent();
-            this.FieldType = fieldType;
+            FieldType = fieldType;
             lblTitle.Text = LocalFieldNames.GetText(fieldType);
             txtContent.Text = caller?.VCard?.GetEntry(fieldType.ToString())?.HelpReading() ?? "Leer";
             this.Focus();
