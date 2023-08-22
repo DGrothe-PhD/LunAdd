@@ -16,6 +16,7 @@ namespace LunAdd
         public static readonly SpeechSynthesizer speaker = new();
         public static readonly Dictionary<FieldType, String> LocalFieldNames = UIFieldNames.GermanFieldNames;
         public Prompt? SayThis;
+        public static bool mute = false;
 
         //TODO interface ReadLarge.MakePrompt
         //TODO make KeyDown virtual

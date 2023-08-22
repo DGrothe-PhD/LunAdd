@@ -13,7 +13,7 @@ namespace LunAdd
             FieldType = fieldType;
             lblTitle.Text = LocalFieldNames.GetText(fieldType);
             txtContent.Text = caller?.VCard?.GetEntry(fieldType.ToString())?.HelpReading() ?? "Leer";
-            //SayThis = new Prompt(PreparePrompt(), SynthesisTextFormat.Ssml);
+            mute = false;
             this.Focus();
         }
 
@@ -32,24 +32,30 @@ namespace LunAdd
             return txtContent.Text.wrapSpeech();
         }
 
+
         private void Element_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == ' ')
             {
-                speaker.SpeakAsync(lblTitle.Text);
+                if (!mute) speaker.SpeakAsync(lblTitle.Text);
                 SayThis = new Prompt(PreparePrompt(), SynthesisTextFormat.Ssml);
-                speaker.SpeakAsync(SayThis);
+                if(!mute) speaker.SpeakAsync(SayThis);
             }
         }
 
         private void Element_KeyDown(object sender, KeyEventArgs e)
         {
-            //e.Handled = true;
             if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
-                if (SayThis != null)
-                    speaker.SpeakAsyncCancel(SayThis);
+                mute = true;
+                var current = speaker.GetCurrentlySpokenPrompt();
+
+                if (current != null)
+                {
+                    speaker.SpeakAsyncCancelAll();
+                }
+
                 this.Close();
             }
         }
