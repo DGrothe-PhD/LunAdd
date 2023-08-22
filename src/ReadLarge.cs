@@ -2,6 +2,6 @@
 {
     internal interface ReadLarge
     {
-        public void DisplayPhone(string fieldname);
+        //public void DisplayPhone(string fieldname);
     }
 }

@@ -5,6 +5,7 @@
         //static CultureInfo invC = CultureInfo.InvariantCulture;
         //static CultureInfo accessLocal = new CultureInfo("de-DE");
         StreamReader? sr;
+        FileStream? stream;
         VCard? currentCard;
         string currentGUI = "", currentField = "", currentVCardField = "";
         public string CurrentGUI { get => currentGUI; private set { currentGUI = value; } }
@@ -29,8 +30,8 @@
                 FileInfo info = new(datei1);
                 Console.WriteLine("Dateigröße: " + info.Length + "\n");
 
-                FileStream fs = new(datei1, FileMode.Open);
-                sr = new StreamReader(fs);
+                stream = new(datei1, FileMode.Open);
+                sr = new StreamReader(stream);
 
                 while (sr.Peek() != -1)
                 {
@@ -106,11 +107,14 @@
                     currentCard.AppendFullName();
                     cards.Add(currentCard);
                 }
+
+                sr?.Close();
+                stream?.Close();
             }
             catch (Exception ex)
             {
                 sr?.Close();
-                //MessageBox.Show(ex.Message + Environment.NewLine +"Details:" + Environment.NewLine + ex.StackTrace);
+                stream?.Close();
                 throw new FileFormatException(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }

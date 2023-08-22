@@ -53,6 +53,8 @@ namespace LunAdd
 
         internal static string HelpReadingPhone(this string input)
         {
+            if (input.Contains("Leer") || input.Contains("leer"))
+                return input;
             // far from elegant but at least it does it
             // otherwise it does seven-hundred dash thing or omits the dash
             var padding = input.ToCharArray()!.Select(x => " " + x);

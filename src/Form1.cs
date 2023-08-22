@@ -1,11 +1,9 @@
-using System.Speech.Synthesis;
 using System.Text;
 
 namespace LunAdd
 {
     public partial class Form1 : StandardForm
     {
-        private readonly SpeechSynthesizer speaker = new SpeechSynthesizer();
         private int currentIndex = 1;
         private bool ignoreVCEvent = false;
         public VCard? VCard { get; private set; }
@@ -19,42 +17,42 @@ namespace LunAdd
                 btnBack.BackgroundImageLayout = ImageLayout.Stretch;
                 btnForward.BackgroundImage = Image.FromFile("Resources/ArrowForward.png");
                 btnForward.BackgroundImageLayout = ImageLayout.Stretch;
-                run();
+                Run();
                 numIndex.Maximum = data?.cards?.Count ?? 1;
                 numIndex.Minimum = 1;
             }
-            catch(FileFormatException ex)
+            catch (FileFormatException ex)
             {
-                MessageBox.Show("Dateiformatfehler. Details:" + Environment.NewLine + ex.Message ?? "");
+                MessageBox.Show("Dateifehler. Details:" + Environment.NewLine + ex.Message ?? "");
                 Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace?.ToString() ?? "");
                 Close();
             }
         }
 
-        private void run()
+        private void Run()
         {
             data = new();
-            updateFields();
+            UpdateFields();
         }
 
-        private void updateFields()
+        private void UpdateFields()
         {
             ignoreVCEvent = true;
             try
             {
                 VCard = data?.cards[currentIndex - 1];
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Problem beim Lesen der Datenquelle.");
                 Close();
             }
             string entry = VCard?.ToString() ?? "";
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             entry.Split("\r\n").ToList().ForEach(x => sb.Append(x.Trim()));
             entry = sb.ToString().Replace("\\n", Environment.NewLine);
             txtEntryInformation.Text = entry;
@@ -77,7 +75,7 @@ namespace LunAdd
             if (currentIndex < data?.cards.Count)
             {
                 currentIndex++;
-                updateFields();
+                UpdateFields();
             }
         }
 
@@ -91,7 +89,7 @@ namespace LunAdd
             if (currentIndex > 1)
             {
                 currentIndex--;
-                updateFields();
+                UpdateFields();
             }
         }
 
@@ -99,7 +97,7 @@ namespace LunAdd
         {
             if (ignoreVCEvent) return;
             currentIndex = (int)numIndex.Value;
-            updateFields();
+            UpdateFields();
         }
 
         private void ElementInvoke(FieldType fieldtype)
@@ -118,7 +116,7 @@ namespace LunAdd
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == '+')
+            if (e.KeyChar == '+')
             {
                 e.Handled = true;
                 FlipForward();
@@ -180,5 +178,16 @@ namespace LunAdd
             ElementInvoke(FieldType.Notes);
         }
 
+        public virtual void Element_KeyDown(object sender, KeyEventArgs e)
+        {
+            //e.Handled = true;
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                if (SayThis != null)
+                    speaker.SpeakAsyncCancel(SayThis);
+                this.Close();
+            }
+        }
     }
 }
