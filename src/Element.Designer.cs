@@ -40,8 +40,10 @@
             txtContent.Multiline = true;
             txtContent.Name = "txtContent";
             txtContent.ReadOnly = true;
+            txtContent.ScrollBars = ScrollBars.Vertical;
             txtContent.Size = new Size(1293, 974);
             txtContent.TabIndex = 0;
+            txtContent.MouseEnter += txtContent_MouseEnter;
             // 
             // lblTitle
             // 
@@ -65,6 +67,7 @@
             Text = "Element";
             KeyDown += Element_KeyDown;
             KeyPress += Element_KeyPress;
+            KeyUp += Element_KeyUp;
             ResumeLayout(false);
             PerformLayout();
         }
