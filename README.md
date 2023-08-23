@@ -32,4 +32,15 @@ While Narrator is activated, some issues come up like the following examples:
 </details>
 
 ## LunAdd
-tbd
+### Minimum requirements
+* Windows (7 or newer)
+* .NET 6 runtime
+* Thunderbird (almost any recent version)
+
+### How it works (when ready)
+* Reads the address book files of your Thunderbird profile
+* Provides read-only access to the database content
+* Navigate by using short key commands to
+  - search for entries by name
+  - listen to notes and numbers therein
+  - faster access to information as compared to tab key navigation 
