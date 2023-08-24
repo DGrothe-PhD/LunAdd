@@ -12,8 +12,8 @@
 
 ### Navigation
 * `+` / `-` : Vorwärts bzw. rückwärts blättern
-* `Leertaste` : Gesamte Visitenkarte vorlesen
-* `Escape` : Schließt das Elementfenster
+* `Leertaste` : Gesamte Visitenkarte vorlesen (gern mehrmals, dann wird entsprechend oft wiederholt)
+* `Escape` : Schließt das Elementfenster und stoppt die zugehörige Sprachausgabe
 
 ### Anzeigekürzel
 * `N` : Zeige den Namen<br>
