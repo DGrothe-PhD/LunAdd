@@ -19,15 +19,15 @@ documentation:
 
 
 backend:
-- './**/*VCard*.cs'
-- './**/*Engine*.cs'
-- './**/*Field*.cs'
+- 'src/*VCard*.cs'
+- 'src/*Engine*.cs'
+- 'src/*Field*.cs'
 
 frontend:
-- './**/*Form*.cs'
-- './**/*Form*.resx'
-- './**/*Element*.cs'
-- './**/*Element*.resx'
+- 'src/*Form*.cs'
+- 'src/*Form*.resx'
+- 'src/*Element*.cs'
+- 'src/*Element*.resx'
 
 testcase:
 - './**/*Test*.cs'
