@@ -63,9 +63,6 @@ namespace LunAdd
             var suffix = "</say-as>";
             s = s.Replace("-", suffix + "<break/> Strich <break/>" + prefixT);
             s = prefixT + s + suffix;
-
-            
-            MessageBox.Show(s);
             return s;
         }
 
