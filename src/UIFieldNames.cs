@@ -1,5 +1,7 @@
 ﻿
 
+using System.Text.RegularExpressions;
+
 namespace LunAdd
 {
     internal static class Extensions
@@ -55,11 +57,15 @@ namespace LunAdd
         {
             if (input.Contains("Leer") || input.Contains("leer"))
                 return input;
-            // far from elegant but at least it does it
-            // otherwise it does seven-hundred dash thing or omits the dash
-            var padding = input.ToCharArray()!.Select(x => " " + x);
-            string s = HelpReading(String.Join("", padding) ?? "");
-            s = s.Replace("-", "<break/> Strich <break/>");
+
+            string s = input;
+            var prefixT = "<say-as interpret-as=\"telephone\">";
+            var suffix = "</say-as>";
+            s = s.Replace("-", suffix + "<break/> Strich <break/>" + prefixT);
+            s = prefixT + s + suffix;
+
+            
+            MessageBox.Show(s);
             return s;
         }
 
