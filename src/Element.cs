@@ -79,7 +79,7 @@ namespace LunAdd
             if (e.KeyCode == Keys.ControlKey)
             {
                 CtrlIsDown = true;
-                speaker.SpeakAsync("Steuerung gedrückt");
+                speaker.SpeakAsync("Zoom");
             }
         }
 
@@ -88,7 +88,7 @@ namespace LunAdd
             if (e.KeyCode == Keys.ControlKey)
             {
                 CtrlIsDown = false;
-                speaker.SpeakAsync("Steuerung losgelassen");
+                speaker.SpeakAsync("fix");
             }
         }
 

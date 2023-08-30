@@ -12,7 +12,7 @@
 
         private readonly string datei1 = "Resources/Mappe1.csv";
         //private readonly string datei1 = "Resources/privat_firmen.csv";
-        //private readonly string datei1 = "Resources/test.csv";
+        private readonly string datei2 = "Resources/test.csv";
 
         public List<VCard> cards;
 
@@ -20,17 +20,18 @@
         {
             currentGUI = string.Empty;
             cards = new List<VCard>();
-            FileRead();//TODO customize filename via combobox.
+            FileRead(datei1);//TODO customize filename via combobox.
+            FileRead(datei2);
         }
 
-        private void FileRead()
+        private void FileRead(string filename)
         {
             try
             {
-                FileInfo info = new(datei1);
+                FileInfo info = new(filename);
                 Console.WriteLine("Dateigröße: " + info.Length + "\n");
 
-                stream = new(datei1, FileMode.Open);
+                stream = new(filename, FileMode.Open);
                 sr = new StreamReader(stream);
 
                 while (sr.Peek() != -1)
@@ -57,10 +58,10 @@
                         if (!char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
                         {
                             //prevent the engine from speaking "======" verbosely
-                            currentCard?.AppendLineToValue(currentField, "(Querlinie)", true);
+                            currentCard?.AppendLineToValue(currentField, "(Querlinie)", false);
                             continue;
                         }
-                        currentCard?.AppendLineToValue(currentField, zeile, true);
+                        currentCard?.AppendLineToValue(currentField, zeile, false);
                         continue;
                     }
 
@@ -87,7 +88,7 @@
                         if (daten[2].StartsWith("+49 "))
                             daten[2] = "0" + daten[2][4..];
                         else if (daten[2].StartsWith("+"))
-                            daten[2] = "Auslandsnummer";
+                            daten[2] = "Auslandsnummer " + daten[2];
                         else if (daten[2][0] != '0')
                             daten[2] = "0" + daten[2];
                     }
@@ -135,15 +136,9 @@
             try
             {
                 //There can be extra colons in the text for notes.
-                if (currentVCardField != "" && daten.Length == 1)
+                if ( currentVCardField != "" && daten.Length == 1 )
                 {
-                    if (!char.IsLetterOrDigit(textline[0]) && textline.Count(f => f == textline[0]) == textline.Length)
-                    {
-                        //prevent the engine from speaking "======" verbosely
-                        currentCard?.AppendLineToValue(currentVCardField, "(Querlinie)");
-                        return;
-                    }
-                    currentCard?.AppendLineToValue(currentVCardField, textline);
+                    ExtractMultiLiner(textline);
                     return;
                 }
                 // Take legacy address field's name if possible, else take fieldname as in the database.
@@ -151,7 +146,13 @@
                 {
                     currentVCardField = lookupfield.ToString();
                 }
-                else
+                else if (currentVCardField.StartsWith("Notes"))
+                {
+                    //If you're here, CSV carries ':' in notes that don't indicate field names.
+                    ExtractMultiLiner(textline);
+                    return;
+                }
+                else 
                 {
                     currentVCardField = daten[0];
                 }
@@ -163,6 +164,18 @@
                     MessageBox.Show(e.ToString() + " in \n" + textline);
                 trynumtimes++;
             }
+        }
+
+        private void ExtractMultiLiner(string textline)
+        {
+            if (!char.IsLetterOrDigit(textline[0]) && textline.Count(f => f == textline[0]) == textline.Length)
+            {
+                //prevent the engine from speaking "======" verbosely
+                currentCard?.AppendLineToValue(currentVCardField, "(Querlinie)");
+                return;
+            }
+            currentCard?.AppendLineToValue(currentVCardField, textline.Trim());
+            return;
         }
     }
 }
