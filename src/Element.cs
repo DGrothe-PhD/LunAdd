@@ -57,7 +57,7 @@ namespace LunAdd
             {
                 if (!mute) speaker.SpeakAsync(lblTitle.Text);
                 SayThis = new Prompt(PreparePrompt(), SynthesisTextFormat.Ssml);
-                if(!mute) speaker.SpeakAsync(SayThis);
+                if (!mute) speaker.SpeakAsync(SayThis);
             }
         }
 
@@ -65,21 +65,12 @@ namespace LunAdd
         {
             if (e.KeyCode == Keys.Escape)
             {
-                e.SuppressKeyPress = true;
-                mute = true;
-                var current = speaker.GetCurrentlySpokenPrompt();
-
-                if (current != null)
-                {
-                    speaker.SpeakAsyncCancelAll();
-                }
-
                 this.Close();
             }
             if (e.KeyCode == Keys.ControlKey)
             {
                 CtrlIsDown = true;
-                speaker.SpeakAsync("Steuerung gedrückt");
+                speaker.SpeakAsync("Zoom");
             }
         }
 
@@ -88,7 +79,7 @@ namespace LunAdd
             if (e.KeyCode == Keys.ControlKey)
             {
                 CtrlIsDown = false;
-                speaker.SpeakAsync("Steuerung losgelassen");
+                speaker.SpeakAsync("fix");
             }
         }
 
@@ -100,6 +91,17 @@ namespace LunAdd
         private void txtContent_MouseEnter(object sender, EventArgs e)
         {
             txtContent.Focus();
+        }
+
+        private void Element_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            mute = true;
+            var current = speaker.GetCurrentlySpokenPrompt();
+
+            if (current != null)
+            {
+                speaker.SpeakAsyncCancelAll();
+            }
         }
     }
 }

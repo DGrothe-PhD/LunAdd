@@ -65,6 +65,7 @@
             Controls.Add(txtContent);
             Name = "Element";
             Text = "Element";
+            FormClosed += Element_FormClosed;
             KeyDown += Element_KeyDown;
             KeyPress += Element_KeyPress;
             KeyUp += Element_KeyUp;

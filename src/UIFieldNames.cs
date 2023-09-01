@@ -1,5 +1,6 @@
 ﻿
 
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace LunAdd
@@ -23,6 +24,7 @@ namespace LunAdd
         internal static string HelpReading(this string input)
         {
             string s = input;
+            s = s.Replace("<br>", Environment.NewLine);
             s = s.Replace("!!!", "‼️");
             s = s.Replace("!", "❗");
             s = s.Replace("?", "❓");
@@ -31,26 +33,29 @@ namespace LunAdd
 
         internal static string HelpReadingNotes(this string input)
         {
-            string[] snippets = input.Split("\n");
-            var timemarkers = new[] {"Uhr", ":30", ":15", ":00", ":45", ".30", ".15", ".00", ".45" };
+            //string[] snippets = input.Split("<br>");
+            string[] snippets = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+            var timemarkers = new[] {"Uhr", ":30", ":15", ":00", ":45", ".30", ".15", ".00", ".45", "n.V.", "n. V."};
             for (int i=0; i<snippets.Length; i++)
             {
                 var s = snippets[i].Trim();
                 if (timemarkers.Any(s.Contains))
                 {
-                    //Need to check for key as a whole word. "Fr" -> "Freitag", whereas "Freundlich" stays.
                     foreach (string key in UIFieldNames.Weekdays.Keys)
                     {
-                        int w = s.IndexOf(key);
-                        if (w == -1) continue;
-                        if (w + 2 < s.Length && !Char.IsLetter(s[w + 2]))
-                            s = s.Replace("-", " bis ");
-                            s = s.Replace(key, UIFieldNames.Weekdays[key]);
+                        var match = $"({key})([.\\s])*[-]";
+                        s = Regex.Replace(s, match, UIFieldNames.Weekdays[key] + " bis ");
+                        match = $"({key})([.\\s])";
+                        s = Regex.Replace(s, match, UIFieldNames.Weekdays[key] + " ");
                     }
+                    s = Regex.Replace(s, @"n[.]\s*V[.]", "nach Vereinbarung");
                     snippets[i] = s;
                 }
             }
-            return String.Join("\r\n", snippets);
+            var result = String.Join("\r\n", snippets);
+            if (Debugger.IsAttached)
+                MessageBox.Show(result);
+            return result;
         }
 
         internal static string HelpReadingPhone(this string input)
