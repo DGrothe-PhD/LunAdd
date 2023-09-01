@@ -17,7 +17,7 @@ namespace LunAdd
 
         public void AppendLineToValue(string currentKey, string appendtext, bool protectLineBreaks = false)
         {
-            Adressdaten[currentKey] += (protectLineBreaks?"\\n":"") 
+            Adressdaten[currentKey] += (protectLineBreaks?"\\n":"<br>") 
                 + Environment.NewLine + appendtext.Trim();
         }
 
@@ -27,11 +27,6 @@ namespace LunAdd
             if (Adressdaten.ContainsKey(field))
             {
                 AddNewField(field + " (2)", value);
-                //var message = this.ToString();
-                //message = (message.Length > 150) ? message[0..150] : message;
-                //MessageBox.Show($"Corrupt source file. Double entry {field} found for card:\r\n"
-                //    + message + "..."
-                //);
             }
             else
             {
@@ -58,12 +53,12 @@ namespace LunAdd
             Adressdaten["FullName"] = s;
         }
 
-        string mlb = "\\n\r\n";
+        string mlb = "<br>\r\n";
         public override string ToString()
         {
             StringBuilder sb = new();
             if (Adressdaten.ContainsKey("FullName"))
-                sb.Append(Adressdaten["FullName"] + mlb);
+                sb.Append(Adressdaten["FullName"].HelpReading());
             foreach (var d in Adressdaten)
             {
                 if (excludedFields.Contains(d.Key)) continue;
@@ -73,11 +68,12 @@ namespace LunAdd
                 {
                     if (LocalFieldNames.TryGetValue(lookupfield, out string? fieldname))
                     {
-                        sb.Append($"{fieldname}: {d.Value.HelpReading()}"+ mlb);
+                        //sb.Append($"{fieldname}: {d.Value}"+ mlb);
+                        sb.Append($"{fieldname}: {d.Value.HelpReading()}");
                         continue;
                     }
                 }
-                sb.AppendLine($"{LocalFieldNames.GetTextOrDefault(d.Key)}: {d.Value.HelpReading()}"+ mlb);
+                sb.AppendLine($"{LocalFieldNames.GetTextOrDefault(d.Key)}: {d.Value.HelpReading()}");
             }
             return sb.ToString();
         }

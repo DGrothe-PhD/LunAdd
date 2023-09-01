@@ -30,7 +30,6 @@
             {
                 currentCard = null;
                 FileInfo info = new(filename);
-                Console.WriteLine("Dateigröße: " + info.Length + "\n");
 
                 stream = new(filename, FileMode.Open);
                 sr = new StreamReader(stream);
@@ -39,6 +38,7 @@
                 {
                     string textline = sr.ReadLine() ?? "";
                     textline = textline.TrimEnd('"');
+                    textline = textline.Replace("\\n", "<br>");
                     if (textline.Equals("card;name;value"))
                         continue;
                     if (textline.Count(f => f == '"') == 1)
@@ -133,7 +133,7 @@
             try
             {
                 //There can be extra colons in the text for notes.
-                if ( currentVCardField != "" && daten.Length == 1 )
+                if (currentVCardField != "" && daten.Length == 1)
                 {
                     ExtractMultiLiner(textline, currentVCardField);
                     return;
@@ -149,7 +149,7 @@
                     ExtractMultiLiner(textline, currentVCardField);
                     return;
                 }
-                else 
+                else
                 {
                     currentVCardField = daten[0];
                 }
@@ -158,7 +158,7 @@
             catch (Exception e)
             {
                 if (trynumtimes < 3)
-                    MessageBox.Show(e.ToString() + " in \n" + textline);
+                    MessageBox.Show(e.ToString() + " in:" + Environment.NewLine + textline);
                 trynumtimes++;
             }
         }

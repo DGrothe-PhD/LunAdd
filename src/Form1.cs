@@ -53,8 +53,10 @@ namespace LunAdd
             }
             string entry = VCard?.ToString() ?? "";
             StringBuilder sb = new();
-            entry.Split("\r\n").ToList().ForEach(x => sb.Append(x.Trim()));
-            entry = sb.ToString().Replace("\\n", Environment.NewLine);
+            //entry.Split("\r\n").ToList().ForEach(x => sb.Append(x.Trim()));
+            sb.Append(entry);
+            sb.Replace("\r\n\r\n", "<br>");
+            entry = sb.ToString().Replace("<br>", Environment.NewLine);
             txtEntryInformation.Text = entry;
             txtSuchstring.Text = currentIndex + " von " + data?.cards.Count.ToString() ?? "";
             numIndex.Value = currentIndex;

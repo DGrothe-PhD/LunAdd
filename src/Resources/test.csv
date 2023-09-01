@@ -5,8 +5,8 @@ a0419099-5dc3-48ef-bfab-652527cb8632;_vCard;"BEGIN:VCARD
 VERSION:4.0
 N:Testzeichenkette;Some City;;;
 FN:Apfel Dornbirn
-NOTE:Sprechzeiten\nMo - Do   	09.00 - 16.00 Uhr\nFr 	09.00 - 14.00 Uhr\n\nD
- r. med. John Doe\nDr. med. Eliza Doe\nDr. med. Erna Doe\nHauptstraße 25\n11111 Berlin\nTel: 030 / 123\nFax. 030 / 231
+NOTE:Sprechzeiten\nMo - Do   	09.00 - 16.00 Uhr\nFr 	09.00 - 14.00 Uhr u. n. V.\n\nD
+ r. med. John Mon Dieu\nDr. med. Eliza Doe\nDr. med. Erna V. Doe\nHauptstraße 25\n11111 Berlin\nTel: 030 / 123\nFax. 030 / 231
  \ninfo@testmail.de
 TEL;TYPE=work;VALUE=TEXT:030 22
 UID:a0419099-5dc3-48ef-bfab-652527cb8632
