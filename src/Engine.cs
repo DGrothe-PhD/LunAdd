@@ -28,6 +28,7 @@
         {
             try
             {
+                currentCard = null;
                 FileInfo info = new(filename);
                 Console.WriteLine("Dateigröße: " + info.Length + "\n");
 
@@ -36,32 +37,28 @@
 
                 while (sr.Peek() != -1)
                 {
-                    string zeile = sr.ReadLine() ?? "";
-                    zeile = zeile.TrimEnd('"');
-                    if (zeile.Count(f => f == '"') == 1)
-                        zeile += '"';
-                    if (zeile.Length < 3) continue;
+                    string textline = sr.ReadLine() ?? "";
+                    textline = textline.TrimEnd('"');
+                    if (textline.Equals("card;name;value"))
+                        continue;
+                    if (textline.Count(f => f == '"') == 1)
+                        textline += '"';
+                    if (textline.Length < 3) continue;
 
-                    string[] daten = zeile.TrimEnd(';').Split(';');
+                    string[] daten = textline.TrimEnd(';').Split(';');
 
                     //Notes can be multiliners so append them to the preceding dictionary value.
                     // VCard format is multiline too, but special. Therein, the colon is the major column separator!
                     if (currentField.Contains("vCard"))
                     {
                         //VCard mode is on
-                        ReadVCardDetails(zeile);
+                        ReadVCardDetails(textline);
                         continue;
                     }
 
                     if (currentField != "" && daten.Length < 3)
                     {
-                        if (!char.IsLetterOrDigit(zeile[0]) && zeile.Count(f => f == zeile[0]) == zeile.Length)
-                        {
-                            //prevent the engine from speaking "======" verbosely
-                            currentCard?.AppendLineToValue(currentField, "(Querlinie)", false);
-                            continue;
-                        }
-                        currentCard?.AppendLineToValue(currentField, zeile, false);
+                        ExtractMultiLiner(textline, currentField);
                         continue;
                     }
 
@@ -138,7 +135,7 @@
                 //There can be extra colons in the text for notes.
                 if ( currentVCardField != "" && daten.Length == 1 )
                 {
-                    ExtractMultiLiner(textline);
+                    ExtractMultiLiner(textline, currentVCardField);
                     return;
                 }
                 // Take legacy address field's name if possible, else take fieldname as in the database.
@@ -149,7 +146,7 @@
                 else if (currentVCardField.StartsWith("Notes"))
                 {
                     //If you're here, CSV carries ':' in notes that don't indicate field names.
-                    ExtractMultiLiner(textline);
+                    ExtractMultiLiner(textline, currentVCardField);
                     return;
                 }
                 else 
@@ -166,15 +163,15 @@
             }
         }
 
-        private void ExtractMultiLiner(string textline)
+        private void ExtractMultiLiner(string textline, string goesToField)
         {
             if (!char.IsLetterOrDigit(textline[0]) && textline.Count(f => f == textline[0]) == textline.Length)
             {
                 //prevent the engine from speaking "======" verbosely
-                currentCard?.AppendLineToValue(currentVCardField, "(Querlinie)");
+                currentCard?.AppendLineToValue(goesToField, "(Querlinie)");
                 return;
             }
-            currentCard?.AppendLineToValue(currentVCardField, textline.Trim());
+            currentCard?.AppendLineToValue(goesToField, textline.Trim());
             return;
         }
     }
