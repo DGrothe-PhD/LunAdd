@@ -58,7 +58,7 @@ namespace LunAdd
         {
             StringBuilder sb = new();
             if (Adressdaten.ContainsKey("FullName"))
-                sb.Append(Adressdaten["FullName"].HelpReading());
+                sb.AppendLine(Adressdaten["FullName"].HelpReading());
             foreach (var d in Adressdaten)
             {
                 if (excludedFields.Contains(d.Key)) continue;

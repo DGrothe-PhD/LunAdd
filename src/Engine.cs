@@ -142,17 +142,17 @@
                 if (UIFieldNames.VCardFieldNames.TryGetValue(daten[0], out FieldType lookupfield))
                 {
                     currentVCardField = lookupfield.ToString();
+                    currentCard?.AddNewField(currentVCardField, daten[1]);
+                    return;
                 }
-                else if (currentVCardField.StartsWith("Notes"))
+
+                if (currentVCardField.StartsWith("Notes"))
                 {
                     //If you're here, CSV carries ':' in notes that don't indicate field names.
                     ExtractMultiLiner(textline, currentVCardField);
                     return;
                 }
-                else
-                {
-                    currentVCardField = daten[0];
-                }
+                currentVCardField = daten[0];
                 currentCard?.AddNewField(currentVCardField, daten[1]);
             }
             catch (Exception e)
