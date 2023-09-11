@@ -60,7 +60,7 @@ namespace LunAdd
 
         internal static string HelpReadingPhone(this string input)
         {
-            if (input.Contains("Leer") || input.Contains("leer"))
+            if (input.Contains(Lang.Resources.EmptyData))
                 return input;
 
             string s = input;
@@ -84,6 +84,9 @@ namespace LunAdd
     }
     internal static class UIFieldNames
     {
+        private static string languageCode = "de-DE";
+        public static string Language { get => languageCode; }
+
         internal static Dictionary<String, String> Weekdays = new Dictionary<String, String>()
         {
             {"Mo", "Montag" }, {"Di", "Dienstag"}, {"Mi", "Mittwoch"}, {"Do", "Donnerstag"},

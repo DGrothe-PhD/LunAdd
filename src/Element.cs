@@ -1,4 +1,5 @@
 ﻿using System.Speech.Synthesis;
+using Lang;
 
 namespace LunAdd
 {
@@ -13,7 +14,7 @@ namespace LunAdd
             InitializeComponent();
             FieldType = fieldType;
             lblTitle.Text = LocalFieldNames.GetText(fieldType);
-            txtContent.Text = caller?.VCard?.GetEntry(fieldType.ToString())?.HelpReading() ?? "Leer";
+            txtContent.Text = caller?.VCard?.GetEntry(fieldType.ToString())?.HelpReading() ?? Lang.Resources.EmptyData;
             mute = false;
             txtContent.MouseWheel += OnMouseWheel;
             Focus();

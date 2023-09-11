@@ -9,9 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Resources\Resources.de-DE.resx" />
+    <EmbeddedResource Remove="Resources\Resources.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\ArrowBack.png" />
     <None Remove="Resources\ArrowForward.png" />
     <None Remove="Resources\Mappe1.csv" />
+    <None Remove="Resources\privat_firmen.csv" />
+    <None Remove="Resources\test.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,10 +31,29 @@
     <Content Include="Resources\Mappe1.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\privat_firmen.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\test.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Speech" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="locales\Resources.de-DE.resx">
+      <Generator></Generator>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CustomToolNamespace>Lang</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="locales\Resources.resx">
+      <Generator></Generator>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CustomToolNamespace>Lang</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

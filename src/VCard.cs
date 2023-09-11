@@ -81,7 +81,7 @@ namespace LunAdd
         internal string GetEntry(string v)
         {
             if (Adressdaten.ContainsKey(v)) { return Adressdaten[v]; }
-            return "Leer";
+            return Lang.Resources.EmptyData;
         }
 
         internal static readonly List<String> excludedFields = new()
