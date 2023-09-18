@@ -120,4 +120,7 @@
   <data name="EmptyData" xml:space="preserve">
     <value>Empty</value>
   </data>
+  <data name="ScrollingAnnouncement" xml:space="preserve">
+    <value>Scrolling</value>
+  </data>
 </root>

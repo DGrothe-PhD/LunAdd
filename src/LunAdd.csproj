@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="locales\Resources.resx" />
     <EmbeddedResource Remove="Resources\Resources.de-DE.resx" />
     <EmbeddedResource Remove="Resources\Resources.resx" />
   </ItemGroup>
@@ -22,6 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="locales\Resources.resx">
+      <Generator>ResourceManager</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Lang</CustomToolNamespace>
+    </Content>
     <Content Include="Resources\ArrowBack.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -45,13 +51,8 @@
 
   <ItemGroup>
     <EmbeddedResource Update="locales\Resources.de-DE.resx">
-      <Generator></Generator>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CustomToolNamespace>Lang</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Update="locales\Resources.resx">
-      <Generator></Generator>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <Generator>ResourceManager</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CustomToolNamespace>Lang</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>

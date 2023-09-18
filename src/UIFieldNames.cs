@@ -2,11 +2,23 @@
 
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Lang;
 
 namespace LunAdd
 {
     internal static class Extensions
     {
+        internal static string LookupTranslation(this string s)
+        {
+            try
+            {
+                return Lang.Resources.ResourceManager.GetString(s) ?? s;
+            }
+            catch(Exception)
+            {
+                return s;
+            }
+        }
         internal static string GetText(this Dictionary<FieldType, String> enumdic, FieldType lookup)
         {
             if (enumdic.ContainsKey(lookup))
@@ -35,8 +47,8 @@ namespace LunAdd
         {
             //string[] snippets = input.Split("<br>");
             string[] snippets = input.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-            var timemarkers = new[] {"Uhr", ":30", ":15", ":00", ":45", ".30", ".15", ".00", ".45", "n.V.", "n. V."};
-            for (int i=0; i<snippets.Length; i++)
+            var timemarkers = new[] { "Uhr", ":30", ":15", ":00", ":45", ".30", ".15", ".00", ".45", "n.V.", "n. V." };
+            for (int i = 0; i < snippets.Length; i++)
             {
                 var s = snippets[i].Trim();
                 if (timemarkers.Any(s.Contains))
