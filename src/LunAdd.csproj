@@ -18,7 +18,6 @@
     <None Remove="Resources\ArrowBack.png" />
     <None Remove="Resources\ArrowForward.png" />
     <None Remove="Resources\Mappe1.csv" />
-    <None Remove="Resources\privat_firmen.csv" />
     <None Remove="Resources\test.csv" />
   </ItemGroup>
 
