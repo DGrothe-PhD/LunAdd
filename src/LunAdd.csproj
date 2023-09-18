@@ -36,9 +36,6 @@
     <Content Include="Resources\Mappe1.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\privat_firmen.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
