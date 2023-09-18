@@ -14,7 +14,8 @@ namespace LunAdd
             InitializeComponent();
             FieldType = fieldType;
             lblTitle.Text = LocalFieldNames.GetText(fieldType);
-            txtContent.Text = caller?.VCard?.GetEntry(fieldType.ToString())?.HelpReading() ?? Lang.Resources.EmptyData;
+            txtContent.Text = caller?.VCard?.GetEntry(fieldType.ToString())?.HelpReading() ?? 
+                "EmptyData".LookupTranslation();
             mute = false;
             txtContent.MouseWheel += OnMouseWheel;
             Focus();
@@ -86,7 +87,7 @@ namespace LunAdd
 
         private void Element_Scroll(object sender, ScrollEventArgs e)
         {
-            speaker.Speak("Scrollen");
+            speaker.Speak("ScrollingAnnouncement".LookupTranslation());
         }
 
         private void txtContent_MouseEnter(object sender, EventArgs e)
