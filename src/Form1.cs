@@ -191,6 +191,16 @@ namespace LunAdd
                 txtSearchField.Clear();
                 return;
             }
+
+            if( e.KeyCode == Keys.Right)
+            {
+                FlipForward();
+            }
+            if (e.KeyCode == Keys.Left)
+            {
+                FlipBack();
+            }
+
             if (e.KeyCode == Keys.Enter && disabledShortcuts)
             {
                 disabledShortcuts = false;
