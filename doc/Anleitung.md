@@ -11,11 +11,15 @@
 ## Tastenkürzel
 
 ### Navigation
-* `+` / `-` : Vorwärts bzw. rückwärts blättern
+* `+` / `-` bzw. linke/rechte Pfeiltaste: Vorwärts bzw. rückwärts blättern
 * `Leertaste` : Gesamte Visitenkarte vorlesen (gern mehrmals, dann wird entsprechend oft wiederholt)
 * `Escape` : Schließt das Elementfenster und stoppt die zugehörige Sprachausgabe
 
-### Anzeigekürzel
+### Suchfunktion
+* `F6` : Öffne das Suchfeld
+* `Enter`: Eingegebenen Text im Adressbuch suchen
+
+### Weitere Tastenkürzel
 * `N` : Zeige den Namen<br>
    Zum Beispiel: Dr. Hartmut Müller
 * `D` : Zeige den Display-Name, also den angezeigten Namen, den Namen des Adressbucheintrags<br>
@@ -32,4 +36,3 @@ Nächste Erweiterungen:
 * `Ende` : Blättere zum Ende
 * `P` : Zeige die Postanschrift(en)
 * (tba) : Betrete das Feld für die Seitenzahleingabe
-* `F6` : Öffne das Suchfeld
