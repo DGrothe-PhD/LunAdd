@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             lblEintrag = new Label();
-            txtSuchstring = new TextBox();
+            txtSearchField = new TextBox();
             btnShowEMail = new Button();
             btnShowAddress = new Button();
             btnHomePhone = new Button();
@@ -53,13 +53,13 @@
             lblEintrag.TabIndex = 0;
             lblEintrag.Text = "Suchen";
             // 
-            // txtSuchstring
+            // txtSearchField
             // 
-            txtSuchstring.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
-            txtSuchstring.Location = new Point(20, 48);
-            txtSuchstring.Name = "txtSuchstring";
-            txtSuchstring.Size = new Size(750, 61);
-            txtSuchstring.TabIndex = 1;
+            txtSearchField.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            txtSearchField.Location = new Point(20, 48);
+            txtSearchField.Name = "txtSearchField";
+            txtSearchField.Size = new Size(750, 61);
+            txtSearchField.TabIndex = 1;
             // 
             // btnShowEMail
             // 
@@ -70,7 +70,7 @@
             btnShowEMail.TabIndex = 2;
             btnShowEMail.Text = "@";
             btnShowEMail.UseVisualStyleBackColor = true;
-            btnShowEMail.Click += btnShowEMail_Click;
+            btnShowEMail.Click += BtnShowEMail_Click;
             // 
             // btnShowAddress
             // 
@@ -91,7 +91,7 @@
             btnHomePhone.TabIndex = 4;
             btnHomePhone.Text = "Tel";
             btnHomePhone.UseVisualStyleBackColor = true;
-            btnHomePhone.Click += btnHomePhone_Click;
+            btnHomePhone.Click += BtnHomePhone_Click;
             // 
             // btnShowMobile
             // 
@@ -102,7 +102,7 @@
             btnShowMobile.TabIndex = 5;
             btnShowMobile.Text = "Mob";
             btnShowMobile.UseVisualStyleBackColor = true;
-            btnShowMobile.Click += btnShowMobile_Click;
+            btnShowMobile.Click += BtnShowMobile_Click;
             // 
             // btnForward
             // 
@@ -163,7 +163,7 @@
             btnWorkPhone.TabIndex = 11;
             btnWorkPhone.Text = "GTel";
             btnWorkPhone.UseVisualStyleBackColor = true;
-            btnWorkPhone.Click += btnWorkPhone_Click;
+            btnWorkPhone.Click += BtnWorkPhone_Click;
             // 
             // Form1
             // 
@@ -181,7 +181,7 @@
             Controls.Add(btnHomePhone);
             Controls.Add(btnShowAddress);
             Controls.Add(btnShowEMail);
-            Controls.Add(txtSuchstring);
+            Controls.Add(txtSearchField);
             Controls.Add(lblEintrag);
             Name = "Form1";
             Text = "Adressbuch";
@@ -195,7 +195,7 @@
         #endregion
 
         private Label lblEintrag;
-        private TextBox txtSuchstring;
+        private TextBox txtSearchField;
         private Button btnShowEMail;
         private Button btnShowAddress;
         private Button btnHomePhone;

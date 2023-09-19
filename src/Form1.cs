@@ -58,7 +58,7 @@ namespace LunAdd
             sb.Replace("\r\n\r\n", "<br>");
             entry = sb.ToString().Replace("<br>", Environment.NewLine);
             txtEntryInformation.Text = entry;
-            txtSuchstring.Text = currentIndex + " von " + data?.cards.Count.ToString() ?? "";
+            txtSearchField.Text = currentIndex + " von " + data?.cards.Count.ToString() ?? "";
             numIndex.Value = currentIndex;
 
             btnForward.Visible = (currentIndex < data?.cards.Count);
@@ -108,70 +108,56 @@ namespace LunAdd
             element.Show();
         }
 
-        private void btnWorkPhone_Click(object sender, EventArgs e) => ElementInvoke(FieldType.WorkPhone);
+        private void BtnWorkPhone_Click(object sender, EventArgs e) => ElementInvoke(FieldType.WorkPhone);
 
-        private void btnHomePhone_Click(object sender, EventArgs e) => ElementInvoke(FieldType.HomePhone);
+        private void BtnHomePhone_Click(object sender, EventArgs e) => ElementInvoke(FieldType.HomePhone);
 
-        private void btnShowMobile_Click(object sender, EventArgs e) => ElementInvoke(FieldType.CellularNumber);
+        private void BtnShowMobile_Click(object sender, EventArgs e) => ElementInvoke(FieldType.CellularNumber);
 
-        private void btnShowEMail_Click(object sender, EventArgs e) => ElementInvoke(FieldType.PrimaryEmail);
+        private void BtnShowEMail_Click(object sender, EventArgs e) => ElementInvoke(FieldType.PrimaryEmail);
 
+        private static bool disabledShortcuts = false;
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '+')
+            if (disabledShortcuts) return;
+            e.Handled = true;
+            switch (e.KeyChar)
             {
-                e.Handled = true;
-                FlipForward();
-            }
-            else if (e.KeyChar == '-')
-            {
-                e.Handled = true;
-                FlipBack();
-            }
-            //
-            if (e.KeyChar == ' ')
-            {
-                speaker.SpeakSsmlAsync(txtEntryInformation.Text.wrapSpeech());
-            }
-            if (e.KeyChar == 'n')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.FullName);
-            }
-            else if (e.KeyChar == 'd')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.DisplayName);
-            }
-            else if (e.KeyChar == '@')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.PrimaryEmail);
-            }
-            else if (e.KeyChar == 't')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.HomePhone);
-            }
-            else if (e.KeyChar == 'f')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.FaxNumber);
-            }
-            else if (e.KeyChar == 'm')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.CellularNumber);
-            }
-            else if (e.KeyChar == 'w')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.WorkPhone);
-            }
-            else if (e.KeyChar == '#')
-            {
-                e.Handled = true;
-                ElementInvoke(FieldType.Notes);
+                case '+':
+                    FlipForward();
+                    break;
+                case '-':
+                    FlipBack();
+                    break;
+                case ' ':
+                    speaker.SpeakSsmlAsync(txtEntryInformation.Text.wrapSpeech());
+                    break;
+                case 'n':
+                    ElementInvoke(FieldType.FullName);
+                    break;
+                case 'd':
+                    ElementInvoke(FieldType.DisplayName);
+                    break;
+                case '@':
+                    ElementInvoke(FieldType.PrimaryEmail);
+                    break;
+                case 't':
+                    ElementInvoke(FieldType.HomePhone);
+                    break;
+                case 'f':
+                    ElementInvoke(FieldType.FaxNumber);
+                    break;
+                case 'm':
+                    ElementInvoke(FieldType.CellularNumber);
+                    break;
+                case 'w':
+                    ElementInvoke(FieldType.WorkPhone);
+                    break;
+                case '#':
+                    ElementInvoke(FieldType.Notes);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -189,6 +175,16 @@ namespace LunAdd
                 if (SayThis != null)
                     speaker.SpeakAsyncCancel(SayThis);
                 this.Close();
+            }
+            else if (e.KeyCode == Keys.F6)
+            {
+                disabledShortcuts = true;
+                txtSearchField.Select();
+            }
+            else if(e.KeyCode == Keys.Enter)
+            {
+                MessageBox.Show("Would search for it now");
+                disabledShortcuts = false;
             }
         }
     }
