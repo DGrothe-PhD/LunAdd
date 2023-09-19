@@ -14,6 +14,7 @@
 * `+` / `-` bzw. linke/rechte Pfeiltaste: Vorwärts bzw. rückwärts blättern
 * `Leertaste` : Gesamte Visitenkarte vorlesen (gern mehrmals, dann wird entsprechend oft wiederholt)
 * `Escape` : Schließt das Elementfenster und stoppt die zugehörige Sprachausgabe
+* `Ende`: Stoppt Sprachausgabe
 
 ### Suchfunktion
 * `F6` : Öffne das Suchfeld
@@ -32,7 +33,7 @@
 * `#` : Zeige Notizen/Bemerkungen
 
 Nächste Erweiterungen:
-* `Pos1` : Blättere zum Anfang
-* `Ende` : Blättere zum Ende
+* `BildAuf` : Blättere zum Anfang
+* `BildAb` : Blättere zum Ende
 * `P` : Zeige die Postanschrift(en)
 * (tba) : Betrete das Feld für die Seitenzahleingabe
