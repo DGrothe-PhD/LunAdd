@@ -41,19 +41,23 @@ namespace LunAdd
 
         private void UpdateFields()
         {
+            UpdateFields(data?.cards[currentIndex - 1]);
+        }
+        private void UpdateFields(VCard? currentCard)
+        {
             ignoreVCEvent = true;
             try
             {
-                VCard = data?.cards[currentIndex - 1];
+                VCard = currentCard;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problem beim Lesen der Datenquelle.");
+                MessageBox.Show("CouldNotReadData".LookupTranslation());
                 Close();
             }
             string entry = VCard?.ToString() ?? "";
             StringBuilder sb = new();
-            //entry.Split("\r\n").ToList().ForEach(x => sb.Append(x.Trim()));
+
             sb.Append(entry);
             sb.Replace("\r\n\r\n", "<br>");
             entry = sb.ToString().Replace("<br>", Environment.NewLine);
@@ -172,19 +176,39 @@ namespace LunAdd
             if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
-                if (SayThis != null)
-                    speaker.SpeakAsyncCancel(SayThis);
+                speaker.SpeakAsyncCancelAll();
                 this.Close();
             }
-            else if (e.KeyCode == Keys.F6)
+            if(e.KeyCode == Keys.End) {
+                e.SuppressKeyPress = true;
+                disabledShortcuts = false;
+                speaker.SpeakAsyncCancelAll();
+            }
+            if (e.KeyCode == Keys.F6)
             {
                 disabledShortcuts = true;
                 txtSearchField.Select();
+                txtSearchField.Clear();
+                return;
             }
-            else if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && disabledShortcuts)
             {
-                MessageBox.Show("Would search for it now");
                 disabledShortcuts = false;
+                string searchtext = txtSearchField.Text;
+                VCard? finding = data?.cards?.FirstOrDefault(
+                    x => x.ToString().Contains(txtSearchField.Text)
+                );
+                if (finding != null)
+                {
+                    UpdateFields(finding);
+                    speaker.SpeakAsync("FoundOne".LookupTranslation());
+                }
+                else
+                {
+                    MessageBox.Show(
+                        String.Format("NothingFound".LookupTranslation(), searchtext)
+                    );
+                }
             }
         }
     }

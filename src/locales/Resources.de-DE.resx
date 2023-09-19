@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CouldNotReadData" xml:space="preserve">
+    <value>Problem beim Lesen der Datenquelle.</value>
+  </data>
   <data name="EmptyData" xml:space="preserve">
     <value>Leer</value>
+  </data>
+  <data name="FoundOne" xml:space="preserve">
+    <value>Eintrag gefunden!</value>
+  </data>
+  <data name="NothingFound" xml:space="preserve">
+    <value>Nichts mit {0} gefunden</value>
   </data>
   <data name="ScrollingAnnouncement" xml:space="preserve">
     <value>Scrollen</value>
