@@ -54,6 +54,10 @@ namespace LunAdd
         }
 
         string mlb = "<br>\r\n";
+        /// <summary>
+        /// Get full text of a VCard.
+        /// </summary>
+        /// <returns>VCard text (all fields)</returns>
         public override string ToString()
         {
             StringBuilder sb = new();

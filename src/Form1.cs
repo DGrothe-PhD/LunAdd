@@ -186,6 +186,7 @@ namespace LunAdd
             }
             if (e.KeyCode == Keys.F6)
             {
+                // Full-text search: hit F6 and type some text to search for.
                 disabledShortcuts = true;
                 txtSearchField.Select();
                 txtSearchField.Clear();
@@ -210,14 +211,14 @@ namespace LunAdd
                 );
                 if (finding != null)
                 {
+                    // show first found card.
                     UpdateFields(finding);
                     speaker.SpeakAsync("FoundOne".LookupTranslation());
                 }
                 else
                 {
-                    MessageBox.Show(
-                        String.Format("NothingFound".LookupTranslation(), searchtext)
-                    );
+                    // Nichts mit abc gefunden.
+                    speaker.SpeakAsync(String.Format("NothingFound".LookupTranslation(), searchtext));
                 }
             }
         }
