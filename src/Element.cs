@@ -81,7 +81,6 @@ namespace LunAdd
             if (e.KeyCode == Keys.ControlKey)
             {
                 CtrlIsDown = false;
-                speaker.SpeakAsync("fix");
             }
         }
 

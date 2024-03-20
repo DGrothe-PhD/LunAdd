@@ -1,4 +1,5 @@
 using System.Text;
+using System.Windows.Forms;
 
 namespace LunAdd
 {
@@ -8,6 +9,7 @@ namespace LunAdd
         private bool ignoreVCEvent = false;
         public VCard? VCard { get; private set; }
         private Engine? data;
+        private List<VCard>? findings;
         public Form1()
         {
             try
@@ -176,10 +178,18 @@ namespace LunAdd
             if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
+                if (disabledShortcuts)
+                {
+                    //ESC - leaves the search field and accepts shortcuts.
+                    disabledShortcuts = false;
+                    return;
+                }
+
                 speaker.SpeakAsyncCancelAll();
                 this.Close();
             }
-            if(e.KeyCode == Keys.End) {
+            if (e.KeyCode == Keys.End)
+            {
                 e.SuppressKeyPress = true;
                 disabledShortcuts = false;
                 speaker.SpeakAsyncCancelAll();
@@ -193,7 +203,7 @@ namespace LunAdd
                 return;
             }
 
-            if( e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right)
             {
                 FlipForward();
             }
@@ -205,15 +215,24 @@ namespace LunAdd
             if (e.KeyCode == Keys.Enter && disabledShortcuts)
             {
                 disabledShortcuts = false;
+
+                //TODO test behav.
+                if (String.IsNullOrEmpty(txtSearchField.Text))
+                {
+
+                    return;
+                }
+
                 string searchtext = txtSearchField.Text;
-                VCard? finding = data?.cards?.FirstOrDefault(
+
+                findings = data?.cards?.FindAll(
                     x => x.ToString().Contains(txtSearchField.Text)
                 );
-                if (finding != null)
+
+                if( findings?.Any() ?? false)
                 {
-                    // show first found card.
-                    UpdateFields(finding);
-                    speaker.SpeakAsync("FoundOne".LookupTranslation());
+                    speaker.SpeakAsync(findings.Count + " "+ "FoundOne".LookupTranslation());
+                    UpdateFields(findings.First());
                 }
                 else
                 {
