@@ -129,6 +129,9 @@
   <data name="NothingFound" xml:space="preserve">
     <value>No entry with {0} found.</value>
   </data>
+  <data name="ReachedItem" xml:space="preserve">
+    <value>Arrived at entry {0} of {1}.</value>
+  </data>
   <data name="ScrollingAnnouncement" xml:space="preserve">
     <value>Scrolling</value>
   </data>

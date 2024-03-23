@@ -123,6 +123,8 @@ namespace LunAdd
         private void BtnShowEMail_Click(object sender, EventArgs e) => ElementInvoke(FieldType.PrimaryEmail);
 
         private static bool disabledShortcuts = false;
+        private int hopPosition;
+
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (disabledShortcuts) return;
@@ -188,7 +190,7 @@ namespace LunAdd
                 speaker.SpeakAsyncCancelAll();
                 this.Close();
             }
-            if (e.KeyCode == Keys.End)
+            if (e.KeyCode == Keys.End && !disabledShortcuts)
             {
                 e.SuppressKeyPress = true;
                 disabledShortcuts = false;
@@ -203,11 +205,12 @@ namespace LunAdd
                 return;
             }
 
-            if (e.KeyCode == Keys.Right)
+            // while typing search text don't flip card entries but allow cursor to move
+            if (e.KeyCode == Keys.Right && !disabledShortcuts )
             {
                 FlipForward();
             }
-            if (e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left && !disabledShortcuts )
             {
                 FlipBack();
             }
@@ -216,10 +219,8 @@ namespace LunAdd
             {
                 disabledShortcuts = false;
 
-                //TODO test behav.
                 if (String.IsNullOrEmpty(txtSearchField.Text))
                 {
-
                     return;
                 }
 
@@ -233,11 +234,28 @@ namespace LunAdd
                 {
                     speaker.SpeakAsync(findings.Count + " "+ "FoundOne".LookupTranslation());
                     UpdateFields(findings.First());
+                    hopPosition = 0;
                 }
                 else
                 {
                     // Nichts mit abc gefunden.
                     speaker.SpeakAsync(String.Format("NothingFound".LookupTranslation(), searchtext));
+                }
+            }
+
+            // next search position
+            if (e.KeyCode == Keys.F3)
+            {
+                if(findings?.Count > hopPosition + 1)
+                {
+                    hopPosition++;
+                    UpdateFields(findings[hopPosition]);
+                }
+                else
+                {
+                    speaker.SpeakAsync(
+                        String.Format("ReachedItem".LookupTranslation(), hopPosition + 1, findings?.Count)
+                    );
                 }
             }
         }
