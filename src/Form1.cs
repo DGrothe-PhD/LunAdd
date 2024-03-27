@@ -72,7 +72,6 @@ namespace LunAdd
             ignoreVCEvent = false;
         }
 
-
         private void btnForward_Click(object sender, EventArgs e)
         {
             FlipForward();
@@ -232,7 +231,11 @@ namespace LunAdd
 
                 if( findings?.Any() ?? false)
                 {
-                    speaker.SpeakAsync(findings.Count + " "+ "FoundOne".LookupTranslation());
+                    string msg = findings.Count switch {
+                        1 => "FoundOne".LookupTranslation(),
+                        _ => findings.Count + " " + "FoundEntries".LookupTranslation()
+                    };
+                    speaker.SpeakAsync(msg);
                     UpdateFields(findings.First());
                     hopPosition = 0;
                 }

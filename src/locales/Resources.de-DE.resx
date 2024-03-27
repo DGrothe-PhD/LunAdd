@@ -123,8 +123,11 @@
   <data name="EmptyData" xml:space="preserve">
     <value>Leer</value>
   </data>
+  <data name="FoundEntries" xml:space="preserve">
+    <value>Einträge gefunden!</value>
+  </data>
   <data name="FoundOne" xml:space="preserve">
-    <value>Eintrag gefunden!</value>
+    <value>Einen Eintrag gefunden!</value>
   </data>
   <data name="NothingFound" xml:space="preserve">
     <value>Nichts mit {0} gefunden</value>
