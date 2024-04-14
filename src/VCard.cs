@@ -1,36 +1,34 @@
 ﻿using System.Text;
-using System.Text.RegularExpressions;
 
 namespace LunAdd
 {
     public class VCard
     {
-        private Dictionary<string, string> Adressdaten;
+        private Dictionary<string, string> AdressData;
         Dictionary<FieldType, String> LocalFieldNames = UIFieldNames.GermanFieldNames;
         // TODO multilanguage, centralized
 
         public VCard()
         {
-            Adressdaten = new();
+            AdressData = new();
         }
 
 
         public void AppendLineToValue(string currentKey, string appendtext, bool protectLineBreaks = false)
         {
-            Adressdaten[currentKey] += (protectLineBreaks?"\\n":"<br>") 
+            AdressData[currentKey] += (protectLineBreaks ? "\\n" : "<br>")
                 + Environment.NewLine + appendtext.Trim();
         }
 
-        int numOfDoubleEntries = 0;
         public void AddNewField(string field, string value)
         {
-            if (Adressdaten.ContainsKey(field))
+            if (AdressData.ContainsKey(field))
             {
                 AddNewField(field + " (2)", value);
             }
             else
             {
-                Adressdaten[field] = value;
+                AdressData[field] = value;
             }
         }
 
@@ -38,7 +36,7 @@ namespace LunAdd
         {
             string[] fullName = new string[3];
             int namepieces = 0;
-            foreach (var d in Adressdaten)
+            foreach (var d in AdressData)
             {
                 if (namepieces < 3)
                 {
@@ -50,7 +48,7 @@ namespace LunAdd
                 else break;
             }
             string s = String.Join(" ", fullName.ToList().Where(x => !String.IsNullOrEmpty(x)).ToList());
-            Adressdaten["FullName"] = s;
+            AdressData["FullName"] = s;
         }
 
         string mlb = "<br>\r\n";
@@ -58,12 +56,14 @@ namespace LunAdd
         /// Get full text of a VCard.
         /// </summary>
         /// <returns>VCard text (all fields)</returns>
+
+        string searchableString;
         public override string ToString()
         {
             StringBuilder sb = new();
-            if (Adressdaten.ContainsKey("FullName"))
-                sb.AppendLine(Adressdaten["FullName"].HelpReading());
-            foreach (var d in Adressdaten)
+            if (AdressData.ContainsKey("FullName"))
+                sb.AppendLine(AdressData["FullName"].HelpReading());
+            foreach (var d in AdressData)
             {
                 if (excludedFields.Contains(d.Key)) continue;
                 if (d.Key == "FullName") continue;
@@ -84,12 +84,14 @@ namespace LunAdd
 
         internal string GetEntry(string v)
         {
-            if (Adressdaten.ContainsKey(v)) { return Adressdaten[v]; }
+            if (AdressData.ContainsKey(v)) { return AdressData[v]; }
             return Lang.Resources.EmptyData;
         }
 
         internal static readonly List<String> excludedFields = new()
-        { "LastModifiedDate", "PhotoType", "PreferMailFormat", "AllowRemoteContent",
-            "PopularityIndex", "PreferDisplayName", "UID"};
+        { 
+            "LastModifiedDate", "PhotoType", "PreferMailFormat", "AllowRemoteContent",
+            "PopularityIndex", "PreferDisplayName", "UID"
+        };
     }
 }
