@@ -52,7 +52,7 @@ namespace LunAdd
             {
                 VCard = currentCard;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("CouldNotReadData".LookupTranslation());
                 Close();
@@ -72,7 +72,7 @@ namespace LunAdd
             ignoreVCEvent = false;
         }
 
-        private void btnForward_Click(object sender, EventArgs e)
+        private void BtnForward_Click(object sender, EventArgs e)
         {
             FlipForward();
         }
@@ -86,7 +86,7 @@ namespace LunAdd
             }
         }
 
-        private void btnBack_Click(object sender, EventArgs e)
+        private void BtnBack_Click(object sender, EventArgs e)
         {
             FlipBack();
         }
@@ -100,7 +100,7 @@ namespace LunAdd
             }
         }
 
-        private void numIndex_ValueChanged(object sender, EventArgs e)
+        private void NumIndex_ValueChanged(object sender, EventArgs e)
         {
             if (ignoreVCEvent) return;
             currentIndex = (int)numIndex.Value;
@@ -168,7 +168,7 @@ namespace LunAdd
             }
         }
 
-        private void btnOpening_Click(object sender, EventArgs e)
+        private void BtnOpening_Click(object sender, EventArgs e)
         {
             ElementInvoke(FieldType.Notes);
         }
@@ -198,6 +198,7 @@ namespace LunAdd
             if (e.KeyCode == Keys.F6)
             {
                 // Full-text search: hit F6 and type some text to search for.
+                findings?.Clear();
                 disabledShortcuts = true;
                 txtSearchField.Select();
                 txtSearchField.Clear();
@@ -249,16 +250,24 @@ namespace LunAdd
             // next search position
             if (e.KeyCode == Keys.F3)
             {
-                if(findings?.Count > hopPosition + 1)
+                if (!findings?.Any() ?? true)
+                {
+                    speaker.SpeakAsync(
+                        String.Format("EmptyItemsList".LookupTranslation())
+                    );
+                }
+                else if(findings?.Count > hopPosition + 1)
                 {
                     hopPosition++;
-                    UpdateFields(findings[hopPosition]);
+                    UpdateFields(findings.ElementAtOrDefault(hopPosition));
                 }
                 else
                 {
                     speaker.SpeakAsync(
                         String.Format("ReachedItem".LookupTranslation(), hopPosition + 1, findings?.Count)
                     );
+                    hopPosition = 0;
+                    UpdateFields(findings?.First());
                 }
             }
         }

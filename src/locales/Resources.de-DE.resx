@@ -123,6 +123,9 @@
   <data name="EmptyData" xml:space="preserve">
     <value>Leer</value>
   </data>
+  <data name="EmptyItemsList" xml:space="preserve">
+    <value>Leere Trefferliste.</value>
+  </data>
   <data name="FoundEntries" xml:space="preserve">
     <value>Einträge gefunden!</value>
   </data>

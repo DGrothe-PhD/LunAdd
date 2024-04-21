@@ -112,7 +112,7 @@
             btnForward.TabIndex = 6;
             btnForward.Text = "next";
             btnForward.UseVisualStyleBackColor = true;
-            btnForward.Click += btnForward_Click;
+            btnForward.Click += BtnForward_Click;
             // 
             // btnBack
             // 
@@ -122,7 +122,7 @@
             btnBack.TabIndex = 7;
             btnBack.Text = "back";
             btnBack.UseVisualStyleBackColor = true;
-            btnBack.Click += btnBack_Click;
+            btnBack.Click += BtnBack_Click;
             // 
             // txtEntryInformation
             // 
@@ -143,7 +143,7 @@
             btnOpening.TabIndex = 9;
             btnOpening.Text = "Informationen";
             btnOpening.UseVisualStyleBackColor = true;
-            btnOpening.Click += btnOpening_Click;
+            btnOpening.Click += BtnOpening_Click;
             // 
             // numIndex
             // 
@@ -152,7 +152,7 @@
             numIndex.Name = "numIndex";
             numIndex.Size = new Size(194, 70);
             numIndex.TabIndex = 10;
-            numIndex.ValueChanged += numIndex_ValueChanged;
+            numIndex.ValueChanged += NumIndex_ValueChanged;
             // 
             // btnWorkPhone
             // 
