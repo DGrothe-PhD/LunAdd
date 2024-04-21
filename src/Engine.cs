@@ -74,6 +74,7 @@
                         if (currentCard != null)
                         {
                             currentCard.AppendFullName();
+                            currentCard.MakeStrings();
                             cards.Add(currentCard);
                         }
                         currentCard = new();
@@ -103,6 +104,7 @@
                 if (currentCard != null)
                 {
                     currentCard.AppendFullName();
+                    currentCard.MakeStrings();
                     cards.Add(currentCard);
                 }
 

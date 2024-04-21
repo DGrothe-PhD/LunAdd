@@ -6,6 +6,8 @@ namespace LunAdd
     {
         private Dictionary<string, string> AdressData;
         Dictionary<FieldType, String> LocalFieldNames = UIFieldNames.GermanFieldNames;
+        public string FullString { get; private set; }
+
         // TODO multilanguage, centralized
 
         public VCard()
@@ -56,9 +58,12 @@ namespace LunAdd
         /// Get full text of a VCard.
         /// </summary>
         /// <returns>VCard text (all fields)</returns>
-
-        string searchableString;
         public override string ToString()
+        {
+            return FullString;
+        }
+
+        public void MakeStrings()
         {
             StringBuilder sb = new();
             if (AdressData.ContainsKey("FullName"))
@@ -79,7 +84,7 @@ namespace LunAdd
                 }
                 sb.AppendLine($"{LocalFieldNames.GetTextOrDefault(d.Key)}: {d.Value.HelpReading()}");
             }
-            return sb.ToString();
+            FullString = sb.ToString();
         }
 
         internal string GetEntry(string v)
