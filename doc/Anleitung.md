@@ -19,6 +19,9 @@
 ### Suchfunktion
 * `F6` : Öffne das Suchfeld
 * `Enter`: Eingegebenen Text im Adressbuch suchen
+* `F3`: Zeige nächsten gefundenen Eintrag
+
+Auch zwischen den gefundenen Einträgen lässt es sich mit den Pfeiltasten blättern, so wie in einem Buch. 
 
 ### Weitere Tastenkürzel
 * `N` : Zeige den Namen<br>
