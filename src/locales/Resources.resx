@@ -120,6 +120,9 @@
   <data name="CouldNotReadData" xml:space="preserve">
     <value>Problem: Could not read data source.</value>
   </data>
+  <data name="DisplayCardNumber" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
   <data name="EmptyData" xml:space="preserve">
     <value>Empty</value>
   </data>

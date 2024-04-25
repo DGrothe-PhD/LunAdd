@@ -4,9 +4,9 @@ namespace LunAdd
 {
     public class VCard
     {
-        private Dictionary<string, string> AdressData;
-        Dictionary<FieldType, String> LocalFieldNames = UIFieldNames.GermanFieldNames;
-        public string FullString { get; private set; }
+        private readonly Dictionary<string, string> AdressData;
+        readonly Dictionary<FieldType, String> LocalFieldNames = UIFieldNames.GermanFieldNames;
+        public string? FullString { get; private set; }
 
         // TODO multilanguage, centralized
 
@@ -53,14 +53,15 @@ namespace LunAdd
             AdressData["FullName"] = s;
         }
 
-        string mlb = "<br>\r\n";
+        //string mlb = "<br>\r\n";
+
         /// <summary>
         /// Get full text of a VCard.
         /// </summary>
         /// <returns>VCard text (all fields)</returns>
         public override string ToString()
         {
-            return FullString;
+            return FullString ?? "";
         }
 
         public void MakeStrings()

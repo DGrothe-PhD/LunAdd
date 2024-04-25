@@ -19,6 +19,7 @@ namespace LunAdd
                 return s;
             }
         }
+
         internal static string GetText(this Dictionary<FieldType, String> enumdic, FieldType lookup)
         {
             if (enumdic.ContainsKey(lookup))
@@ -31,6 +32,18 @@ namespace LunAdd
             if (Enum.TryParse(typeof(FieldType), lookup, out object? result) && result != null)
                 return enumdic[(FieldType)result];
             else return lookup;
+        }
+
+        /// <summary>
+        /// <paramref name="comp"/> example: StringComparison.OrdinalIgnoreCase
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="toCheck"></param>
+        /// <param name="comp">Comparison (e.g. case-insensitive)</param>
+        /// <returns>True if <paramref name="source"/> contains <paramref name="toCheck"/></returns>
+        internal static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source?.IndexOf(toCheck, comp) >= 0;
         }
 
         internal static string HelpReading(this string input)

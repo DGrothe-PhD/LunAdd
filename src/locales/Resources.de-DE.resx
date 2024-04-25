@@ -120,6 +120,9 @@
   <data name="CouldNotReadData" xml:space="preserve">
     <value>Problem beim Lesen der Datenquelle.</value>
   </data>
+  <data name="DisplayCardNumber" xml:space="preserve">
+    <value>{0} von {1}</value>
+  </data>
   <data name="EmptyData" xml:space="preserve">
     <value>Leer</value>
   </data>
@@ -133,7 +136,7 @@
     <value>Einen Eintrag gefunden!</value>
   </data>
   <data name="NothingFound" xml:space="preserve">
-    <value>Nichts mit {0} gefunden</value>
+    <value>Nichts mit {0} gefunden.</value>
   </data>
   <data name="ReachedItem" xml:space="preserve">
     <value>Eintrag {0} von {1} erreicht.</value>

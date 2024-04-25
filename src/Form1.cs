@@ -9,7 +9,7 @@ namespace LunAdd
         private bool ignoreVCEvent = false;
         public VCard? VCard { get; private set; }
         private Engine? data;
-        private List<VCard>? findings;
+        private Dictionary<int, VCard>? findingsWithIndices;
         public Form1()
         {
             try
@@ -45,7 +45,7 @@ namespace LunAdd
         {
             UpdateFields(data?.cards[currentIndex - 1]);
         }
-        private void UpdateFields(VCard? currentCard)
+        private void UpdateFields(VCard? currentCard, int? index = null)
         {
             ignoreVCEvent = true;
             try
@@ -64,8 +64,19 @@ namespace LunAdd
             sb.Replace("\r\n\r\n", "<br>");
             entry = sb.ToString().Replace("<br>", Environment.NewLine);
             txtEntryInformation.Text = entry;
-            txtSearchField.Text = currentIndex + " von " + data?.cards.Count.ToString() ?? "";
-            numIndex.Value = currentIndex;
+
+            if (index == null)
+            {
+                txtSearchField.Text = String.Format(
+                    "DisplayCardNumber".LookupTranslation(),
+                    currentIndex, data?.cards.Count.ToString() ?? ""
+                    );
+                numIndex.Value = currentIndex;
+            }
+            else
+            {
+                currentIndex = (int)index + 1;
+            }
 
             btnForward.Visible = (currentIndex < data?.cards.Count);
             btnBack.Visible = (currentIndex > 1);
@@ -198,7 +209,7 @@ namespace LunAdd
             if (e.KeyCode == Keys.F6)
             {
                 // Full-text search: hit F6 and type some text to search for.
-                findings?.Clear();
+                findingsWithIndices?.Clear();
                 disabledShortcuts = true;
                 txtSearchField.Select();
                 txtSearchField.Clear();
@@ -206,11 +217,11 @@ namespace LunAdd
             }
 
             // while typing search text don't flip card entries but allow cursor to move
-            if (e.KeyCode == Keys.Right && !disabledShortcuts )
+            if (e.KeyCode == Keys.Right && !disabledShortcuts)
             {
                 FlipForward();
             }
-            if (e.KeyCode == Keys.Left && !disabledShortcuts )
+            if (e.KeyCode == Keys.Left && !disabledShortcuts)
             {
                 FlipBack();
             }
@@ -226,18 +237,24 @@ namespace LunAdd
 
                 string searchtext = txtSearchField.Text;
 
-                findings = data?.cards?.FindAll(
-                    x => x.ToString().Contains(txtSearchField.Text)
-                );
+                // Select all cards that match, with their index.
+                // User can scroll through the next `pages` from an entry found
+                findingsWithIndices = data!.cards!.Select((c, i) => new { card = c, Index = i })
+                    .Where(x => x.ToString()!.Contains(txtSearchField.Text, StringComparison.OrdinalIgnoreCase))
+                    .ToDictionary(x => x.Index, x => x.card);
 
-                if( findings?.Any() ?? false)
+                if (findingsWithIndices?.Any() ?? false)
                 {
-                    string msg = findings.Count switch {
+                    currentIndex = findingsWithIndices!.First().Key;
+
+                    string msg = findingsWithIndices!.Count switch
+                    {
                         1 => "FoundOne".LookupTranslation(),
-                        _ => findings.Count + " " + "FoundEntries".LookupTranslation()
+                        _ => findingsWithIndices.Count + " " + "FoundEntries".LookupTranslation()
                     };
                     speaker.SpeakAsync(msg);
-                    UpdateFields(findings.First());
+
+                    UpdateFields(findingsWithIndices?.First().Value, findingsWithIndices?.First().Key);
                     hopPosition = 0;
                 }
                 else
@@ -250,24 +267,26 @@ namespace LunAdd
             // next search position
             if (e.KeyCode == Keys.F3)
             {
-                if (!findings?.Any() ?? true)
+                if (!findingsWithIndices?.Any() ?? true)
                 {
                     speaker.SpeakAsync(
                         String.Format("EmptyItemsList".LookupTranslation())
                     );
                 }
-                else if(findings?.Count > hopPosition + 1)
+                else if (findingsWithIndices?.Count > hopPosition + 1)
                 {
                     hopPosition++;
-                    UpdateFields(findings.ElementAtOrDefault(hopPosition));
+                    var f = findingsWithIndices.ElementAtOrDefault(hopPosition);
+                    UpdateFields(f.Value, f.Key);
                 }
                 else
                 {
                     speaker.SpeakAsync(
-                        String.Format("ReachedItem".LookupTranslation(), hopPosition + 1, findings?.Count)
+                        String.Format("ReachedItem".LookupTranslation(), hopPosition + 1, findingsWithIndices?.Count)
                     );
                     hopPosition = 0;
-                    UpdateFields(findings?.First());
+                    var f = findingsWithIndices!.First();
+                    UpdateFields(f.Value, f.Key);
                 }
             }
         }
